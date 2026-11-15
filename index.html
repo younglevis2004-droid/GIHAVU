@@ -4,17 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Abamotari</title>
+<script>try{var th0=localStorage.getItem("mt_theme");if(th0=="light"||th0=="dark")document.documentElement.setAttribute("data-theme",th0)}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f2f4ee;--card:#fff;--ink:#14281d;--mut:#5d6b62;--line:#d9dfd3;--ok:#1f7a4d;--okbg:#dff1e6;--warn:#8a5a00;--warnbg:#fbe9b8;--bad:#b3261e;--badbg:#f8d9d6;--btn:#14281d;--btnink:#fff;
+:root{color-scheme:light;--bg:#f2f4ee;--card:#fff;--ink:#14281d;--mut:#5d6b62;--line:#d9dfd3;--ok:#1f7a4d;--okbg:#dff1e6;--warn:#8a5a00;--warnbg:#fbe9b8;--bad:#b3261e;--badbg:#f8d9d6;--btn:#14281d;--btnink:#fff;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101a14;--card:#182419;--ink:#eaf1ea;--mut:#9db0a2;--line:#2b3b2f;--ok:#6fd49b;--okbg:#1c3a29;--warn:#f2c14e;--warnbg:#3b3011;--bad:#ff8a80;--badbg:#431d1a;--btn:#eaf1ea;--btnink:#14281d}}
-:root[data-theme="dark"]{--bg:#101a14;--card:#182419;--ink:#eaf1ea;--mut:#9db0a2;--line:#2b3b2f;--ok:#6fd49b;--okbg:#1c3a29;--warn:#f2c14e;--warnbg:#3b3011;--bad:#ff8a80;--badbg:#431d1a;--btn:#eaf1ea;--btnink:#14281d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#101a14;--card:#182419;--ink:#eaf1ea;--mut:#9db0a2;--line:#2b3b2f;--ok:#6fd49b;--okbg:#1c3a29;--warn:#f2c14e;--warnbg:#3b3011;--bad:#ff8a80;--badbg:#431d1a;--btn:#eaf1ea;--btnink:#14281d}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101a14;--card:#182419;--ink:#eaf1ea;--mut:#9db0a2;--line:#2b3b2f;--ok:#6fd49b;--okbg:#1c3a29;--warn:#f2c14e;--warnbg:#3b3011;--bad:#ff8a80;--badbg:#431d1a;--btn:#eaf1ea;--btnink:#14281d}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
 main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
 h1{font-size:28px;margin:4px 0 2px;letter-spacing:-.5px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .sub{color:var(--mut);margin:0 0 16px;font-size:14px}
 .sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .sum div{border-radius:10px;padding:10px 8px;text-align:center}
@@ -29,6 +31,7 @@ h1{font-size:28px;margin:4px 0 2px;letter-spacing:-.5px}
 .grow{flex:1;min-width:0}
 .tag{font-size:12px;font-weight:700;padding:4px 9px;border-radius:99px;white-space:nowrap}
 .tag.bad{background:var(--badbg);color:var(--bad)}.tag.warn{background:var(--warnbg);color:var(--warn)}.tag.ok{background:var(--okbg);color:var(--ok)}
+.flag{display:inline-block;margin-top:3px;font-size:11px;font-weight:700;color:var(--bad);background:var(--badbg);padding:2px 8px;border-radius:99px}
 .body{padding:0 14px 14px;border-top:1px solid var(--line)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
 .row:last-of-type{border-bottom:0}
@@ -46,29 +49,64 @@ details.add summary{font-weight:700;cursor:pointer}
 .av{width:46px;height:46px;border-radius:50%;object-fit:cover;background:var(--okbg);color:var(--ok);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;flex:none}
 .pb{font-weight:700;font-size:14px;padding:9px 14px;border-radius:8px;border:1px solid var(--line);cursor:pointer}
 .note{color:var(--mut);font-size:12px;text-align:center;margin-top:18px}
+.f>*{min-width:0}.f input{width:100%}
+.sec{font-weight:700;margin:16px 0 4px;font-size:15px}
+.mon{font-size:12px;font-weight:700;color:var(--mut);margin:10px 0 2px;display:flex;justify-content:space-between}
+.sumbox{background:var(--okbg);color:var(--ok);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.sumbox div{display:flex;justify-content:space-between;gap:8px;padding:3px 0}
+.sumbox small{display:block;margin-top:4px;opacity:.85}
+.sumbox .neg{color:var(--bad)}
+#set{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.chips .b{padding:6px 12px;font-size:13px}
+#rep{display:none}
+#rep h1{font-size:22px;margin:0 0 4px}#rep h2{font-size:18px;margin:0 0 4px}#rep h3{font-size:15px;margin:14px 0 4px}#rep p{margin:2px 0}
+#rep table{width:100%;border-collapse:collapse;margin:4px 0 10px}
+#rep td,#rep th{border:1px solid #888;padding:5px 7px;text-align:left;font-size:13px}
+#rep img{width:90px;height:90px;object-fit:cover;border-radius:8px;margin-right:14px}
+#rep .rh{display:flex;align-items:center;margin:10px 0}
+@media print{
+body>*:not(#rep){display:none!important}
+body{background:#fff!important}
+#rep{display:block!important;color:#000;background:#fff;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:8px}
+}
 </style>
 </head>
 <body>
 <main>
-<section id="login"><h1>Abamotari</h1><p class="sub">Injira kugira ngo ubone amakuru.</p><div class="f"><label>Imeli<input id="em" type="email" autocomplete="username"></label><label>Ijambo ry’ibanga<input id="pw" type="password" autocomplete="current-password"></label><button class="b main" id="lb">Injira</button><p id="le" class="d bad"></p></div></section>
-<div id="app" hidden><h1>Abamotari</h1>
-<p class="sub">Kurikirana buri mumotari: ibyangombwa n’imikorere ye.</p>
+<section id="login"><h1>Abamotari</h1><p class="sub" data-t="login_sub"></p><div class="f"><label><span data-t="email"></span><input id="em" type="email" autocomplete="username"></label><label><span data-t="pass"></span><input id="pw" type="password" autocomplete="current-password"></label><button class="b main" id="lb" data-t="signin"></button><p id="le" class="d bad"></p></div></section>
+<div id="app" hidden>
+<div class="top"><h1>Abamotari</h1><button class="b" id="gear" aria-label="Settings">⚙</button></div>
+<p class="sub" data-t="app_sub"></p>
+<section id="set" hidden>
+<div class="sec" data-t="settings" style="margin-top:0"></div>
+<div class="sec" data-t="lang"></div>
+<div class="seg"><button class="b" data-lang="rw">Kinyarwanda</button><button class="b" data-lang="en">English</button></div>
+<div class="sec" data-t="theme"></div>
+<div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
+<div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label></div>
+<p class="note" data-t="dev_note"></p>
+</section>
 <div class="sum" id="sum"></div>
-<details class="add"><summary>Ongeraho umumotari</summary>
+<details class="add"><summary data-t="add"></summary>
 <div class="f">
-<label>Amazina<input id="n" placeholder="Urugero: Jean Claude"></label>
-<label>Plaque ya moto<input id="p" placeholder="RF 123 A"></label>
-<label>Telefone<input id="t" inputmode="tel" placeholder="078..."></label>
-<label>Ifoto<input id="ph" type="file" accept="image/*"></label>
-<label>Permis irangira<input id="e1" type="date"></label>
-<label>Ubwishingizi burangira<input id="e2" type="date"></label>
-<label>Isuzuma rya moto rirangira<input id="e3" type="date"></label>
-<button class="b main" id="addb">Bika umumotari</button>
+<label><span data-t="f_name"></span><input id="n" data-tp="ph_name"></label>
+<label><span data-t="f_plate"></span><input id="p" placeholder="RF 123 A"></label>
+<label><span data-t="f_phone"></span><input id="t" inputmode="tel" placeholder="078..."></label>
+<label><span data-t="f_photo"></span><input id="ph" type="file" accept="image/*"></label>
+<label><span data-t="f_start"></span><input id="e0" type="date"></label>
+<label><span data-t="f_permis"></span><input id="e1" type="date"></label>
+<label><span data-t="f_ins"></span><input id="e2" type="date"></label>
+<label><span data-t="f_insp"></span><input id="e3" type="date"></label>
+<label><span data-t="f_week"></span><input id="e4" type="number" inputmode="numeric"></label>
+<button class="b main" id="addb" data-t="save_driver"></button>
 </div></details>
+<div class="chips"><button class="b" data-f="all" id="fa"></button><button class="b" data-f="flag" id="ff"></button></div>
 <div id="list"></div>
-<p class="note"><button class="b" id="out">Sohoka</button></p></div>
+<p class="note"><button class="b" id="out" data-t="signout"></button></p></div>
 </main>
-<script>setTimeout(function(){if(!window.__ok){var e=document.getElementById("le");if(e)e.textContent="Page ntishoboye gufungura. Igomba gushyirwa kuri Netlify (ntifungurirwa muri telefone nk’idosiye)."}},3000)</script>
+<div id="rep"></div>
+<script>setTimeout(function(){if(!window.__ok){var e=document.getElementById("le");if(e)e.textContent="Page ntishoboye gufungura. Igomba gufungurwa kuri link ya GitHub Pages. / This page must be opened from the GitHub Pages link."}},3000)</script>
 <script type="module">
 window.__ok=1;
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -76,6 +114,56 @@ import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https:
 import{getFirestore,collection,doc,setDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:db22900a707cdfec889bc5"};
 var app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+
+var T={
+rw:{login_sub:"Injira kugira ngo ubone amakuru.",email:"Imeli",pass:"Ijambo ry’ibanga",signin:"Injira",login_err:"Imeli cyangwa ijambo ry’ibanga si byo.",
+app_sub:"Kurikirana buri mumotari: ibyangombwa n’imikorere ye.",add:"Ongeraho umumotari",f_name:"Amazina",ph_name:"Urugero: Jean Claude",f_plate:"Plaque ya moto",f_phone:"Telefone",f_photo:"Ifoto",f_start:"Yatangiye akazi (itariki)",f_permis:"Permis irangira",f_ins:"Ubwishingizi burangira",f_insp:"Isuzuma rya moto rirangira",f_week:"Amafaranga y’icyumweru (RWF)",save_driver:"Bika umumotari",signout:"Sohoka",
+sum_bad:"Byarangiye",sum_warn:"Bigiye kurangira",sum_ok:"Ni byiza",tag_bad:"Hari cyarangiye",tag_days:"Iminsi {0}",tag_ok:"Ni byiza",
+change_photo:"Hindura ifoto",photo:"Ifoto",started:"Yatangiye akazi",n_permis:"Permis",n_ins:"Ubwishingizi",n_insp:"Isuzuma rya moto",
+day:"umunsi",days:"iminsi",expired_ago:"Cyarangiye {0} ({1} ishize)",exp_today:"Kirarangira uyu munsi",nodate:"Nta tariki",left_days:"Hasigaye iminsi {0}",
+starts_in:"Azatangira mu minsi {0}",s_days:"iminsi {0}",s_months:"amezi {0}",s_years:"imyaka {0}",s_years_m:"imyaka {0} n’amezi {1}",worked:"Amaze {0}",
+days_week:"Iminsi yakoze iki cyumweru",dec:"Gabanya",inc:"Ongera",weekly:"Amafaranga y’icyumweru",total_pay:"Ayose agomba kwishyura",total_hint:"Si ngombwa (ideni, kugura moto)",
+paid_week:"Yishyuye iki cyumweru",paid:"Yishyuye",notpaid:"Ntiyishyuye",
+pay_h:"Ayo yatanze",date:"Itariki",amount:"Amafaranga (RWF)",add_pay:"Ongeraho ayo yatanze",no_pay:"Nta mafaranga aranditswe.",paid_total:"Yishyuye yose",this_month:"Uku kwezi",time_work:"Igihe amaze akora",
+due:"Agomba kwishyura ({0} × {1})",over:"Yarenzeho",remain:"Asigaje",hint_rem:"Shyiraho itariki yo gutangira cyangwa “Ayose agomba kwishyura” kugira ngo ibare asigaye.",del_pay:"Usibye iri tangwa?",need_amt:"Andika amafaranga yatanze.",
+call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho uyu mumotari?",
+empty:"Nta mumotari urongerwaho. Ongeraho uwa mbere hejuru.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
+flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
+settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
+rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
+months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
+en:{login_sub:"Sign in to see the data.",email:"Email",pass:"Password",signin:"Sign in",login_err:"Wrong email or password.",
+app_sub:"Track each driver: documents and performance.",add:"Add a driver",f_name:"Name",ph_name:"Example: Jean Claude",f_plate:"Moto plate",f_phone:"Phone",f_photo:"Photo",f_start:"Started work (date)",f_permis:"Licence expires",f_ins:"Insurance expires",f_insp:"Moto inspection expires",f_week:"Weekly amount (RWF)",save_driver:"Save driver",signout:"Sign out",
+sum_bad:"Expired",sum_warn:"Expiring soon",sum_ok:"All good",tag_bad:"Expired item",tag_days:"{0} days",tag_ok:"All good",
+change_photo:"Change photo",photo:"Photo",started:"Started work",n_permis:"Licence",n_ins:"Insurance",n_insp:"Moto inspection",
+day:"day",days:"days",expired_ago:"Expired {0} {1} ago",exp_today:"Expires today",nodate:"No date",left_days:"{0} days left",
+starts_in:"Starts in {0} days",s_days:"{0} days",s_months:"{0} months",s_years:"{0} yr",s_years_m:"{0} yr {1} mo",worked:"Working for {0}",
+days_week:"Days worked this week",dec:"Decrease",inc:"Increase",weekly:"Weekly amount",total_pay:"Total to pay",total_hint:"Optional (debt, buying the moto)",
+paid_week:"Paid this week",paid:"Paid",notpaid:"Not paid",
+pay_h:"Payments",date:"Date",amount:"Amount (RWF)",add_pay:"Add payment",no_pay:"No payments recorded.",paid_total:"Total paid",this_month:"This month",time_work:"Time working",
+due:"Due ({0} wks × {1})",over:"Overpaid",remain:"Remaining",hint_rem:"Set a start date or “Total to pay” to calculate the remaining amount.",del_pay:"Delete this payment?",need_amt:"Enter the amount paid.",
+call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this driver?",
+empty:"No drivers yet. Add the first one above.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
+flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
+settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
+rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
+months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
+};
+var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+var lang=LS.get("mt_lang","rw");if(!T[lang])lang="rw";
+var theme=LS.get("mt_theme","auto");
+var WARN=parseInt(LS.get("mt_warn","30"),10);if(isNaN(WARN))WARN=30;
+var DEF=parseInt(LS.get("mt_amt","15000"),10);if(isNaN(DEF)||DEF<=0)DEF=15000;
+var filter="all";
+function t(k){var s=T[lang][k];if(s==null)s=T.rw[k];if(s==null)s=k;for(var i=1;i<arguments.length;i++)s=s.split("{"+(i-1)+"}").join(arguments[i]);return s}
+function applyTheme(){var r=document.documentElement;if(theme=="light"||theme=="dark")r.setAttribute("data-theme",theme);else r.removeAttribute("data-theme")}
+function applyStatic(){document.documentElement.lang=lang;
+document.querySelectorAll("[data-t]").forEach(function(e){e.textContent=t(e.getAttribute("data-t"))});
+document.querySelectorAll("[data-tp]").forEach(function(e){e.placeholder=t(e.getAttribute("data-tp"))});
+document.querySelectorAll("[data-lang]").forEach(function(b){b.classList.toggle("main",b.dataset.lang==lang)});
+document.querySelectorAll("[data-th]").forEach(function(b){b.classList.toggle("main",b.dataset.th==theme)});
+document.getElementById("s_warn").value=WARN;document.getElementById("s_amt").value=DEF;document.getElementById("e4").value=DEF}
+
 var open=null,data=[],ready=false,msg="",unsub=null;
 function iso(off){var d=new Date();d.setDate(d.getDate()+off);return d.toISOString().slice(0,10)}
 function sample(){return[
@@ -85,49 +173,106 @@ function sample(){return[
 {id:4,n:"Emmanuel Mugisha",p:"RF 902 D",t:"0781 000 444",doc:[iso(25),iso(-2),iso(60)],days:2,paid:false,amt:15000}]}
 var L=document.getElementById("login"),A=document.getElementById("app");
 onAuthStateChanged(auth,function(u){L.hidden=!!u;A.hidden=!u;
-if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.map(function(x){var o=x.data();o.id=x.id;return o});render()},function(){msg="Amakuru ntashoboye gusomwa. Reba interineti.";render()})}
+if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.map(function(x){var o=x.data();o.id=x.id;return o});render()},function(){msg=t("read_err");render()})}
 else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
-signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent="Imeli cyangwa ijambo ry’ibanga si byo."})};
+signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
 document.getElementById("out").onclick=function(){signOut(auth)};
 function av(x){return x.photo?'<img class="av" src="'+x.photo+'" alt="">':'<span class="av">'+esc((x.n||"?").trim().charAt(0).toUpperCase())+'</span>'}
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};i.src=r.result};r.readAsDataURL(f)}
 var newPhoto="";
-function persist(x){setDoc(doc(db,"motari",x.id),x).catch(function(){alert("Ntibyabitswe. Gerageza nanone.")})}
+function persist(x){setDoc(doc(db,"motari",x.id),x).catch(function(){alert(t("save_err"))})}
 function seed(){sample().forEach(function(x){x.id=String(x.id);persist(x)})}
-var NAMES=["Permis","Ubwishingizi","Isuzuma rya moto"];
+function dn(i){return t(["n_permis","n_ins","n_insp"][i])}
 function left(d){if(!d)return 9999;var a=new Date(d+"T00:00:00"),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
-function st(x){var m=Math.min.apply(null,x.doc.map(left));return m<0?"bad":m<=30?"warn":"ok"}
-function lab(n){return n<0?"Cyarangiye "+(-n)+" ("+(-n==1?"umunsi":"iminsi")+" ishize)":n==0?"Kirarangira uyu munsi":n>=9999?"Nta tariki":"Hasigaye iminsi "+n}
-function cls(n){return n<0?"bad":n<=30?"warn":"ok"}
+function st(x){var m=Math.min.apply(null,x.doc.map(left));return m<0?"bad":m<=WARN?"warn":"ok"}
+function lab(n){return n<0?t("expired_ago",-n,-n==1?t("day"):t("days")):n==0?t("exp_today"):n>=9999?t("nodate"):t("left_days",n)}
+function durS(d){var n=-left(d);if(n<31)return t("s_days",n);var m=Math.floor(n/30.4);if(m<12)return t("s_months",m);var y=Math.floor(m/12),r=m%12;return r?t("s_years_m",y,r):t("s_years",y)}
+function dur(d){if(!d)return t("nodate");var n=-left(d);if(n<0)return t("starts_in",-n);return t("worked",durS(d))}
+function durShort(d){return d&&-left(d)>=0?durS(d):dur(d)}
+function cls(n){return n<0?"bad":n<=WARN?"warn":"ok"}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function fmt(n){return (+n||0).toLocaleString("fr-RW")}
+function fdate(d){if(!d)return "-";var p=d.split("-");return +p[2]+" "+T[lang].months[+p[1]-1]+" "+p[0]}
+function mlab(k){if(!k)return t("nodate");var p=k.split("-");return T[lang].months[+p[1]-1]+" "+p[0]}
+function fin(x){var paid=(x.pay||[]).reduce(function(s,p){return s+(+p.a||0)},0);var n=x.start?-left(x.start):0,wk=n>0?Math.floor(n/7):0,exp=wk*(+x.amt||0),tot=+x.total||0,base=tot>0?tot:exp;return{paid:paid,wk:wk,exp:exp,tot:tot,base:base,rem:base-paid}}
+function paySec(x){var f=fin(x),pay=(x.pay||[]).slice().sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:0}),cm=today().slice(0,7),mt=0;
+pay.forEach(function(p){if((p.d||"").slice(0,7)==cm)mt+=+p.a||0});
+var h='<div class="sec">'+t("pay_h")+'</div><div class="f" style="grid-template-columns:1fr 1fr"><label>'+t("date")+'<input type="date" value="'+today()+'" data-pd="'+x.id+'"></label><label>'+t("amount")+'<input type="number" inputmode="numeric" value="'+x.amt+'" data-pa="'+x.id+'"></label><button class="b main" data-ap="'+x.id+'" style="grid-column:1/-1">'+t("add_pay")+'</button></div>';
+var cur="";
+pay.forEach(function(p){var k=(p.d||"").slice(0,7);if(k!=cur){cur=k;var s=0;pay.forEach(function(q){if((q.d||"").slice(0,7)==k)s+=+q.a||0});h+='<div class="mon"><span>'+mlab(k)+'</span><span>'+fmt(s)+' RWF</span></div>'}
+h+='<div class="row"><span>'+fdate(p.d)+'</span><span class="step"><b style="min-width:0">'+fmt(p.a)+' RWF</b><button class="b del" data-dp="'+x.id+'|'+p.id+'" aria-label="×">×</button></span></div>'});
+if(!pay.length)h+='<p class="sub" style="margin:8px 0 0">'+t("no_pay")+'</p>';
+h+='<div class="sumbox"><div><span>'+t("paid_total")+'</span><b>'+fmt(f.paid)+' RWF</b></div><div><span>'+t("this_month")+'</span><b>'+fmt(mt)+' RWF</b></div><div><span>'+t("time_work")+'</span><b>'+durShort(x.start)+'</b></div>';
+if(f.tot>0||x.start){h+='<div><span>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt)))+'</span><b>'+fmt(f.base)+' RWF</b></div><div'+(f.rem<0?' class="neg"':'')+'><span>'+(f.rem<0?t("over"):t("remain"))+'</span><b>'+fmt(Math.abs(f.rem))+' RWF</b></div>'}
+else h+='<div><span>'+t("remain")+'</span><b>—</b></div><small>'+t("hint_rem")+'</small>';
+return h+'</div>'}
+function report(x){var f=fin(x),pay=(x.pay||[]).slice().sort(function(a,b){return a.d>b.d?1:a.d<b.d?-1:0});
+var h='<h1>'+t("rp_title")+'</h1><p>'+t("rp_date")+': '+fdate(today())+'</p><div class="rh">'+(x.photo?'<img src="'+x.photo+'" alt="">':'')+'<div><h2>'+esc(x.n)+'</h2><p>'+t("rp_plate")+': '+esc(x.p)+'</p><p>'+t("rp_phone")+': '+esc(x.t)+'</p><p>'+t("started")+': '+fdate(x.start)+' ('+dur(x.start)+')</p>'+(x.flag?'<p><b>⚠ '+t("flag_badge")+'</b>'+(x.note?': '+esc(x.note):'')+'</p>':'')+'</div></div>';
+h+='<h3>'+t("rp_docs")+'</h3><table><tr><th>'+t("rp_doc")+'</th><th>'+t("rp_exp")+'</th><th>'+t("rp_status")+'</th></tr>'+x.doc.map(function(d,i){return '<tr><td>'+dn(i)+'</td><td>'+fdate(d)+'</td><td>'+lab(left(d))+'</td></tr>'}).join("")+'</table>';
+h+='<h3>'+t("rp_perf")+'</h3><table><tr><td>'+t("days_week")+'</td><td>'+x.days+' / 7</td></tr><tr><td>'+t("weekly")+'</td><td>'+fmt(x.amt)+' RWF</td></tr><tr><td>'+t("paid_week")+'</td><td>'+(x.paid?t("yes"):t("no"))+'</td></tr></table>';
+h+='<h3>'+t("rp_pay")+'</h3>';
+if(pay.length){h+='<table><tr><th>'+t("date")+'</th><th>'+t("rp_amt")+'</th></tr>'+pay.map(function(p){return '<tr><td>'+fdate(p.d)+'</td><td>'+fmt(p.a)+' RWF</td></tr>'}).join("")+'</table>'}else h+='<p>'+t("no_pay")+'</p>';
+h+='<table><tr><td>'+t("paid_total")+'</td><td><b>'+fmt(f.paid)+' RWF</b></td></tr>';
+if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt)))+'</td><td>'+fmt(f.base)+' RWF</td></tr><tr><td>'+(f.rem<0?t("over"):t("remain"))+'</td><td><b>'+fmt(Math.abs(f.rem))+' RWF</b></td></tr>';
+h+='</table>';
+document.getElementById("rep").innerHTML=h;var old=document.title;document.title=t("rp_title")+" - "+x.n;window.onafterprint=function(){document.title=old};setTimeout(function(){window.print()},150)}
 function render(){
 var c={bad:0,warn:0,ok:0};data.forEach(function(x){c[st(x)]++});
-document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>Byarangiye</span></div><div class="s-warn"><b>'+c.warn+'</b><span>Bigiye kurangira</span></div><div class="s-ok"><b>'+c.ok+'</b><span>Ni byiza</span></div>';
+document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
+var nf=data.filter(function(x){return x.flag}).length;
+var fa=document.getElementById("fa"),ff=document.getElementById("ff");
+fa.textContent=t("f_all")+" ("+data.length+")";ff.textContent=t("f_flag")+" ("+nf+")";
+fa.classList.toggle("main",filter=="all");ff.classList.toggle("main",filter=="flag");
 var o={bad:0,warn:1,ok:2};
-var sorted=data.slice().sort(function(a,b){return o[st(a)]-o[st(b)]});
-document.getElementById("list").innerHTML=sorted.map(function(x){
+var shown=(filter=="flag"?data.filter(function(x){return x.flag}):data).slice().sort(function(a,b){return o[st(a)]-o[st(b)]});
+document.getElementById("list").innerHTML=shown.map(function(x){
 var s=st(x),m=Math.min.apply(null,x.doc.map(left));
-var h='<div class="card '+s+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span></span><span class="tag '+s+'">'+(s=="bad"?"Hari cyarangiye":s=="warn"?"Iminsi "+m:"Ni byiza")+'</span></button>';
-if(open===x.id){h+='<div class="body"><div class="row"><span>Ifoto</span><label class="pb">Hindura ifoto<input type="file" accept="image/*" data-ph="'+x.id+'" hidden></label></div>';
-x.doc.forEach(function(d,i){var n=left(d);h+='<div class="row"><span>'+NAMES[i]+'<small class="d '+cls(n)+'">'+lab(n)+'</small></span><input type="date" value="'+d+'" data-d="'+x.id+'" data-i="'+i+'" aria-label="'+NAMES[i]+'"></div>'});
-h+='<div class="row"><span>Iminsi yakoze iki cyumweru<div class="bar"><i style="width:'+(x.days/7*100)+'%"></i></div></span><span class="step"><button class="b" data-k="'+x.id+'" data-v="-1" aria-label="Gabanya">−</button><b>'+x.days+'/7</b><button class="b" data-k="'+x.id+'" data-v="1" aria-label="Ongera">+</button></span></div>';
-h+='<div class="row"><span>Yishyuye iki cyumweru<small>'+x.amt.toLocaleString("fr-RW")+' RWF</small></span><button class="b '+(x.paid?"main":"")+'" data-p="'+x.id+'">'+(x.paid?"Yishyuye":"Ntiyishyuye")+'</button></div>';
-h+='<div class="row"><a href="tel:'+esc(x.t.replace(/\s/g,""))+'" class="b" style="text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-weight:700;font-size:14px">Muhamagare</a><button class="b del" data-x="'+x.id+'">Mukure</button></div></div>'}
-return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?"Nta mumotari urongerwaho. Ongeraho uwa mbere hejuru.":"Birimo gufungura…"))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">Shyiraho abo kugerageza</button>':'')}
+var h='<div class="card '+s+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span>'+(x.flag?'<br><span class="flag">⚠ '+t("flag_badge")+'</span>':'')+'</span><span class="tag '+s+'">'+(s=="bad"?t("tag_bad"):s=="warn"?t("tag_days",m):t("tag_ok"))+'</span></button>';
+if(open===x.id){h+='<div class="body"><div class="row"><span>'+t("photo")+'</span><label class="pb">'+t("change_photo")+'<input type="file" accept="image/*" data-ph="'+x.id+'" hidden></label></div>';
+h+='<div class="row"><span>'+t("started")+'<small>'+dur(x.start)+'</small></span><input type="date" value="'+(x.start||"")+'" data-st="'+x.id+'" aria-label="'+t("started")+'"></div>';
+x.doc.forEach(function(d,i){var n=left(d);h+='<div class="row"><span>'+dn(i)+'<small class="d '+cls(n)+'">'+lab(n)+'</small></span><input type="date" value="'+d+'" data-d="'+x.id+'" data-i="'+i+'" aria-label="'+dn(i)+'"></div>'});
+h+='<div class="row"><span>'+t("days_week")+'<div class="bar"><i style="width:'+(x.days/7*100)+'%"></i></div></span><span class="step"><button class="b" data-k="'+x.id+'" data-v="-1" aria-label="'+t("dec")+'">−</button><b>'+x.days+'/7</b><button class="b" data-k="'+x.id+'" data-v="1" aria-label="'+t("inc")+'">+</button></span></div>';
+h+='<div class="row"><span>'+t("weekly")+'<small>RWF</small></span><input type="number" inputmode="numeric" value="'+x.amt+'" data-am="'+x.id+'" style="width:120px" aria-label="'+t("weekly")+'"></div>';
+h+='<div class="row"><span>'+t("total_pay")+'<small>'+t("total_hint")+'</small></span><input type="number" inputmode="numeric" value="'+(x.total||"")+'" placeholder="0" data-tt="'+x.id+'" style="width:120px" aria-label="'+t("total_pay")+'"></div>';
+h+='<div class="row"><span>'+t("paid_week")+'<small>'+fmt(x.amt)+' RWF</small></span><button class="b '+(x.paid?"main":"")+'" data-p="'+x.id+'">'+(x.paid?t("paid"):t("notpaid"))+'</button></div>';
+h+='<div class="row"><span>'+t("flag_row")+'</span><button class="b '+(x.flag?"del":"")+'" data-fl="'+x.id+'">'+(x.flag?t("flag_unset"):t("flag_set"))+'</button></div>';
+if(x.flag)h+='<div class="row"><input data-nt="'+x.id+'" value="'+esc(x.note||"")+'" placeholder="'+t("flag_note")+'" style="width:100%"></div>';
+h+=paySec(x);
+h+='<div class="row" style="flex-wrap:wrap"><a href="tel:'+esc(x.t.replace(/\s/g,""))+'" class="b" style="text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-weight:700;font-size:14px">'+t("call")+'</a><button class="b" data-rp="'+x.id+'">'+t("report_btn")+'</button><button class="b del" data-x="'+x.id+'">'+t("remove")+'</button></div></div>'}
+return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?(filter=="flag"&&data.length?t("none_flag"):t("empty")):t("loading")))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">'+t("sample")+'</button>':'')}
 function find(id){return data.filter(function(x){return x.id==id})[0]}
 document.addEventListener("click",function(e){
-var t=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],#addb");if(!t)return;
-if(t.id=="addb"){var n=document.getElementById("n").value.trim();if(!n){alert("Andika amazina y’umumotari.");return}
-persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:document.getElementById("t").value||"-",doc:[document.getElementById("e1").value,document.getElementById("e2").value,document.getElementById("e3").value],days:0,paid:false,amt:15000,photo:newPhoto});newPhoto="";document.getElementById("ph").value="";
-["n","p","t","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.querySelector("details.add").open=false}
-else if(t.dataset.s){seed()}else if(t.dataset.o){var id=t.dataset.o;open=open===id?null:id}
-else if(t.dataset.k){var x=find(t.dataset.k);x.days=Math.max(0,Math.min(7,x.days+ +t.dataset.v));persist(x)}
-else if(t.dataset.p){var y=find(t.dataset.p);y.paid=!y.paid;persist(y)}
-else if(t.dataset.x){if(confirm("Ukureho uyu mumotari?")){deleteDoc(doc(db,"motari",t.dataset.x));open=null}else return}
+var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-f],[data-lang],[data-th],#gear,#addb");if(!t0)return;
+var d0=t0.dataset;
+if(t0.id=="gear"){var sp=document.getElementById("set");sp.hidden=!sp.hidden;return}
+else if(d0.lang){lang=d0.lang;LS.set("mt_lang",lang);applyStatic()}
+else if(d0.th){theme=d0.th;LS.set("mt_theme",theme);applyTheme();applyStatic()}
+else if(d0.f){filter=d0.f}
+else if(t0.id=="addb"){var n=document.getElementById("n").value.trim();if(!n){alert(t("need_name"));return}
+persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:document.getElementById("t").value||"-",doc:[document.getElementById("e1").value,document.getElementById("e2").value,document.getElementById("e3").value],days:0,paid:false,amt:+document.getElementById("e4").value||DEF,photo:newPhoto,start:document.getElementById("e0").value});newPhoto="";document.getElementById("ph").value="";
+["n","p","t","e0","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.getElementById("e4").value=DEF;document.querySelector("details.add").open=false}
+else if(d0.ap){var id2=d0.ap,z=find(id2),dv=document.querySelector('[data-pd="'+id2+'"]').value||today(),av2=+document.querySelector('[data-pa="'+id2+'"]').value;if(!av2){alert(t("need_amt"));return}z.pay=(z.pay||[]).concat([{id:String(Date.now()),d:dv,a:av2}]);persist(z)}
+else if(d0.dp){var pr=d0.dp.split("|"),z2=find(pr[0]);if(confirm(t("del_pay"))){z2.pay=(z2.pay||[]).filter(function(p){return p.id!=pr[1]});persist(z2)}else return}
+else if(d0.rp){report(find(d0.rp));return}
+else if(d0.fl){var z3=find(d0.fl);z3.flag=!z3.flag;persist(z3)}
+else if(d0.s){seed()}else if(d0.o){var id=d0.o;open=open===id?null:id}
+else if(d0.k){var x=find(d0.k);x.days=Math.max(0,Math.min(7,x.days+ +d0.v));persist(x)}
+else if(d0.p){var y=find(d0.p);y.paid=!y.paid;persist(y)}
+else if(d0.x){if(confirm(t("rm_confirm"))){deleteDoc(doc(db,"motari",d0.x));open=null}else return}
 render()});
-document.addEventListener("change",function(e){var t=e.target;if(t.id=="ph"&&t.files[0]){shrink(t.files[0],function(u){newPhoto=u})}if(t.dataset.ph&&t.files[0]){shrink(t.files[0],function(u){var z=find(t.dataset.ph);z.photo=u;persist(z)})}if(t.dataset.d){var x=find(t.dataset.d);x.doc[+t.dataset.i]=t.value;persist(x);render()}});
-render();
+document.addEventListener("change",function(e){var t0=e.target,d0=t0.dataset;
+if(t0.id=="s_warn"){var w=parseInt(t0.value,10);WARN=isNaN(w)?30:Math.max(0,Math.min(365,w));LS.set("mt_warn",WARN);t0.value=WARN;setTimeout(render,0);return}
+if(t0.id=="s_amt"){var a=parseInt(t0.value,10);DEF=isNaN(a)||a<=0?15000:a;LS.set("mt_amt",DEF);t0.value=DEF;document.getElementById("e4").value=DEF;return}
+if(t0.id=="ph"&&t0.files[0]){shrink(t0.files[0],function(u){newPhoto=u})}
+if(d0.ph&&t0.files[0]){shrink(t0.files[0],function(u){var z=find(d0.ph);z.photo=u;persist(z)})}
+if(d0.nt){var zn=find(d0.nt);zn.note=t0.value;persist(zn)}
+if(d0.tt){var u2=find(d0.tt);u2.total=Math.max(0,+t0.value||0);persist(u2);setTimeout(render,0)}
+if(d0.am){var q=find(d0.am);q.amt=Math.max(0,+t0.value||0);persist(q);setTimeout(render,0)}
+if(d0.st){var w2=find(d0.st);w2.start=t0.value;persist(w2);setTimeout(render,0)}
+if(d0.d){var x=find(d0.d);x.doc[+d0.i]=t0.value;persist(x);setTimeout(render,0)}});
+applyTheme();applyStatic();render();
 </script>
 </body>
 </html>
