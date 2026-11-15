@@ -99,9 +99,10 @@ body{background:#fff!important}
 <label><span data-t="f_ins"></span><input id="e2" type="date"></label>
 <label><span data-t="f_insp"></span><input id="e3" type="date"></label>
 <label><span data-t="f_week"></span><input id="e4" type="number" inputmode="numeric"></label>
+<label><span data-t="f_months"></span><input id="e5" type="number" inputmode="numeric" value="24"></label>
 <button class="b main" id="addb" data-t="save_driver"></button>
 </div></details>
-<div class="chips"><button class="b" data-f="all" id="fa"></button><button class="b" data-f="flag" id="ff"></button></div>
+<div class="chips"><button class="b" data-f="all" id="fa"></button><button class="b" data-f="flag" id="ff"></button><button class="b" data-f="left" id="fl"></button></div>
 <div id="list"></div>
 <p class="note"><button class="b" id="out" data-t="signout"></button></p></div>
 </main>
@@ -129,6 +130,7 @@ due:"Agomba kwishyura ({0} × {1})",over:"Yarenzeho",remain:"Asigaje",hint_rem:"
 call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho uyu mumotari?",
 empty:"Nta mumotari urongerwaho. Ongeraho uwa mbere hejuru.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
+f_months:"Igihe cy’amasezerano (amezi)",c_months:"Igihe cy’amasezerano (amezi)",c_end:"Moto izaba iye ku wa",c_left:"Hasigaye",c_done:"Igihe cyarangiye",c_none:"Shyiraho itariki yo gutangira n’amezi y’amasezerano kugira ngo igihe gibarwe.",c_prog:"{0}% by’igihe cyarangiye",left_badge:"Yavuyemo",left_q:"Yavuye mu kazi?",left_btn:"Yavuyemo",back_btn:"Agaruke mu kazi",left_conf:"Ashyirwe mu bavuyemo? Amakuru ye yose arabikwa.",left_on:"Yavuye ku wa {0}",left_reason:"Impamvu (si ngombwa)",f_left:"Abavuyemo",none_left:"Nta mumotari wavuyemo.",dup:"Hari umumotari ufite iyi plaque cyangwa telefone: {0}. Ukomeze kumwongera?",dup_left:" (yavuyemo)",
 settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
 rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
 months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
@@ -145,6 +147,7 @@ due:"Due ({0} wks × {1})",over:"Overpaid",remain:"Remaining",hint_rem:"Set a st
 call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this driver?",
 empty:"No drivers yet. Add the first one above.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
+f_months:"Contract length (months)",c_months:"Contract length (months)",c_end:"Moto becomes his on",c_left:"Remaining",c_done:"Period completed",c_none:"Set a start date and contract months to calculate the time.",c_prog:"{0}% of the time elapsed",left_badge:"Left",left_q:"Left the job?",left_btn:"Mark as left",back_btn:"Return to work",left_conf:"Move to former drivers? All data is kept.",left_on:"Left on {0}",left_reason:"Reason (optional)",f_left:"Left",none_left:"No drivers have left.",dup:"A driver with this plate or phone already exists: {0}. Add anyway?",dup_left:" (left)",
 settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
 rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
@@ -187,7 +190,8 @@ function dn(i){return t(["n_permis","n_ins","n_insp"][i])}
 function left(d){if(!d)return 9999;var a=new Date(d+"T00:00:00"),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
 function st(x){var m=Math.min.apply(null,x.doc.map(left));return m<0?"bad":m<=WARN?"warn":"ok"}
 function lab(n){return n<0?t("expired_ago",-n,-n==1?t("day"):t("days")):n==0?t("exp_today"):n>=9999?t("nodate"):t("left_days",n)}
-function durS(d){var n=-left(d);if(n<31)return t("s_days",n);var m=Math.floor(n/30.4);if(m<12)return t("s_months",m);var y=Math.floor(m/12),r=m%12;return r?t("s_years_m",y,r):t("s_years",y)}
+function durS(d){return durN(-left(d))}
+function durN(n){if(n<31)return t("s_days",n);var m=Math.floor(n/30.4);if(m<12)return t("s_months",m);var y=Math.floor(m/12),r=m%12;return r?t("s_years_m",y,r):t("s_years",y)}
 function dur(d){if(!d)return t("nodate");var n=-left(d);if(n<0)return t("starts_in",-n);return t("worked",durS(d))}
 function durShort(d){return d&&-left(d)>=0?durS(d):dur(d)}
 function cls(n){return n<0?"bad":n<=WARN?"warn":"ok"}
@@ -196,6 +200,10 @@ function today(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()
 function fmt(n){return (+n||0).toLocaleString("fr-RW")}
 function fdate(d){if(!d)return "-";var p=d.split("-");return +p[2]+" "+T[lang].months[+p[1]-1]+" "+p[0]}
 function mlab(k){if(!k)return t("nodate");var p=k.split("-");return T[lang].months[+p[1]-1]+" "+p[0]}
+function addM(d,m){var a=new Date(d+"T00:00:00");a.setMonth(a.getMonth()+m);return a.getFullYear()+"-"+String(a.getMonth()+1).padStart(2,"0")+"-"+String(a.getDate()).padStart(2,"0")}
+function cend(x){return x.start&&+x.months>0?addM(x.start,+x.months):""}
+function cprog(x){var e=cend(x);if(!e)return 0;var tot=(new Date(e)-new Date(x.start))/864e5,used=-left(x.start);return Math.max(0,Math.min(100,Math.round(used/tot*100)))}
+function contract(x){var e=cend(x);if(!e)return '<p class="sub" style="margin:8px 0 0">'+t("c_none")+'</p>';var n=left(e),p=cprog(x);return '<div class="sumbox"><div><span>'+t("c_end")+'</span><b>'+fdate(e)+'</b></div><div><span>'+t("c_left")+'</span><b>'+(n>0?durN(n):t("c_done"))+'</b></div><div class="bar"><i style="width:'+p+'%"></i></div><small>'+t("c_prog",p)+'</small></div>'}
 function fin(x){var paid=(x.pay||[]).reduce(function(s,p){return s+(+p.a||0)},0);var n=x.start?-left(x.start):0,wk=n>0?Math.floor(n/7):0,exp=wk*(+x.amt||0),tot=+x.total||0,base=tot>0?tot:exp;return{paid:paid,wk:wk,exp:exp,tot:tot,base:base,rem:base-paid}}
 function paySec(x){var f=fin(x),pay=(x.pay||[]).slice().sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:0}),cm=today().slice(0,7),mt=0;
 pay.forEach(function(p){if((p.d||"").slice(0,7)==cm)mt+=+p.a||0});
@@ -209,7 +217,7 @@ if(f.tot>0||x.start){h+='<div><span>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x
 else h+='<div><span>'+t("remain")+'</span><b>—</b></div><small>'+t("hint_rem")+'</small>';
 return h+'</div>'}
 function report(x){var f=fin(x),pay=(x.pay||[]).slice().sort(function(a,b){return a.d>b.d?1:a.d<b.d?-1:0});
-var h='<h1>'+t("rp_title")+'</h1><p>'+t("rp_date")+': '+fdate(today())+'</p><div class="rh">'+(x.photo?'<img src="'+x.photo+'" alt="">':'')+'<div><h2>'+esc(x.n)+'</h2><p>'+t("rp_plate")+': '+esc(x.p)+'</p><p>'+t("rp_phone")+': '+esc(x.t)+'</p><p>'+t("started")+': '+fdate(x.start)+' ('+dur(x.start)+')</p>'+(x.flag?'<p><b>⚠ '+t("flag_badge")+'</b>'+(x.note?': '+esc(x.note):'')+'</p>':'')+'</div></div>';
+var h='<h1>'+t("rp_title")+'</h1><p>'+t("rp_date")+': '+fdate(today())+'</p><div class="rh">'+(x.photo?'<img src="'+x.photo+'" alt="">':'')+'<div><h2>'+esc(x.n)+'</h2><p>'+t("rp_plate")+': '+esc(x.p)+'</p><p>'+t("rp_phone")+': '+esc(x.t)+'</p><p>'+t("started")+': '+fdate(x.start)+' ('+dur(x.start)+')</p>'+(cend(x)?'<p>'+t('c_end')+': '+fdate(cend(x))+' ('+(left(cend(x))>0?t('c_left')+' '+durN(left(cend(x))):t('c_done'))+')</p>':'')+(x.left?'<p><b>'+t('left_badge')+':</b> '+fdate(x.left)+(x.lreason?' — '+esc(x.lreason):'')+'</p>':'')+(x.flag?'<p><b>⚠ '+t("flag_badge")+'</b>'+(x.note?': '+esc(x.note):'')+'</p>':'')+'</div></div>';
 h+='<h3>'+t("rp_docs")+'</h3><table><tr><th>'+t("rp_doc")+'</th><th>'+t("rp_exp")+'</th><th>'+t("rp_status")+'</th></tr>'+x.doc.map(function(d,i){return '<tr><td>'+dn(i)+'</td><td>'+fdate(d)+'</td><td>'+lab(left(d))+'</td></tr>'}).join("")+'</table>';
 h+='<h3>'+t("rp_perf")+'</h3><table><tr><td>'+t("days_week")+'</td><td>'+x.days+' / 7</td></tr><tr><td>'+t("weekly")+'</td><td>'+fmt(x.amt)+' RWF</td></tr><tr><td>'+t("paid_week")+'</td><td>'+(x.paid?t("yes"):t("no"))+'</td></tr></table>';
 h+='<h3>'+t("rp_pay")+'</h3>';
@@ -219,43 +227,48 @@ if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt
 h+='</table>';
 document.getElementById("rep").innerHTML=h;var old=document.title;document.title=t("rp_title")+" - "+x.n;window.onafterprint=function(){document.title=old};setTimeout(function(){window.print()},150)}
 function render(){
-var c={bad:0,warn:0,ok:0};data.forEach(function(x){c[st(x)]++});
+var act=data.filter(function(x){return !x.left}),gone=data.filter(function(x){return x.left});var c={bad:0,warn:0,ok:0};act.forEach(function(x){c[st(x)]++});
 document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
-var nf=data.filter(function(x){return x.flag}).length;
+var nf=act.filter(function(x){return x.flag}).length;
 var fa=document.getElementById("fa"),ff=document.getElementById("ff");
-fa.textContent=t("f_all")+" ("+data.length+")";ff.textContent=t("f_flag")+" ("+nf+")";
+var fl=document.getElementById("fl");fl.textContent=t("f_left")+" ("+gone.length+")";fl.classList.toggle("main",filter=="left");fa.textContent=t("f_all")+" ("+act.length+")";ff.textContent=t("f_flag")+" ("+nf+")";
 fa.classList.toggle("main",filter=="all");ff.classList.toggle("main",filter=="flag");
 var o={bad:0,warn:1,ok:2};
-var shown=(filter=="flag"?data.filter(function(x){return x.flag}):data).slice().sort(function(a,b){return o[st(a)]-o[st(b)]});
+var shown=(filter=="left"?gone:filter=="flag"?act.filter(function(x){return x.flag}):act).slice().sort(function(a,b){return o[st(a)]-o[st(b)]});
 document.getElementById("list").innerHTML=shown.map(function(x){
 var s=st(x),m=Math.min.apply(null,x.doc.map(left));
-var h='<div class="card '+s+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span>'+(x.flag?'<br><span class="flag">⚠ '+t("flag_badge")+'</span>':'')+'</span><span class="tag '+s+'">'+(s=="bad"?t("tag_bad"):s=="warn"?t("tag_days",m):t("tag_ok"))+'</span></button>';
+var h='<div class="card '+(x.left?"":s)+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span>'+(x.flag?'<br><span class="flag">⚠ '+t("flag_badge")+'</span>':'')+'</span>'+(x.left?'<span class="tag" style="background:var(--line);color:var(--mut)">'+t("left_badge")+'</span>':'<span class="tag '+s+'">'+(s=="bad"?t("tag_bad"):s=="warn"?t("tag_days",m):t("tag_ok"))+'</span>')+'</button>';
 if(open===x.id){h+='<div class="body"><div class="row"><span>'+t("photo")+'</span><label class="pb">'+t("change_photo")+'<input type="file" accept="image/*" data-ph="'+x.id+'" hidden></label></div>';
 h+='<div class="row"><span>'+t("started")+'<small>'+dur(x.start)+'</small></span><input type="date" value="'+(x.start||"")+'" data-st="'+x.id+'" aria-label="'+t("started")+'"></div>';
+h+='<div class="row"><span>'+t("c_months")+'</span><input type="number" inputmode="numeric" value="'+(x.months||"")+'" data-mo="'+x.id+'" style="width:120px"></div>'+contract(x);
 x.doc.forEach(function(d,i){var n=left(d);h+='<div class="row"><span>'+dn(i)+'<small class="d '+cls(n)+'">'+lab(n)+'</small></span><input type="date" value="'+d+'" data-d="'+x.id+'" data-i="'+i+'" aria-label="'+dn(i)+'"></div>'});
 h+='<div class="row"><span>'+t("days_week")+'<div class="bar"><i style="width:'+(x.days/7*100)+'%"></i></div></span><span class="step"><button class="b" data-k="'+x.id+'" data-v="-1" aria-label="'+t("dec")+'">−</button><b>'+x.days+'/7</b><button class="b" data-k="'+x.id+'" data-v="1" aria-label="'+t("inc")+'">+</button></span></div>';
 h+='<div class="row"><span>'+t("weekly")+'<small>RWF</small></span><input type="number" inputmode="numeric" value="'+x.amt+'" data-am="'+x.id+'" style="width:120px" aria-label="'+t("weekly")+'"></div>';
 h+='<div class="row"><span>'+t("total_pay")+'<small>'+t("total_hint")+'</small></span><input type="number" inputmode="numeric" value="'+(x.total||"")+'" placeholder="0" data-tt="'+x.id+'" style="width:120px" aria-label="'+t("total_pay")+'"></div>';
 h+='<div class="row"><span>'+t("paid_week")+'<small>'+fmt(x.amt)+' RWF</small></span><button class="b '+(x.paid?"main":"")+'" data-p="'+x.id+'">'+(x.paid?t("paid"):t("notpaid"))+'</button></div>';
 h+='<div class="row"><span>'+t("flag_row")+'</span><button class="b '+(x.flag?"del":"")+'" data-fl="'+x.id+'">'+(x.flag?t("flag_unset"):t("flag_set"))+'</button></div>';
+h+='<div class="row"><span>'+(x.left?t("left_on",fdate(x.left)):t("left_q"))+'</span><button class="b '+(x.left?"":"del")+'" data-lv="'+x.id+'">'+(x.left?t("back_btn"):t("left_btn"))+'</button></div>';
+if(x.left)h+='<div class="row"><input data-lr="'+x.id+'" value="'+esc(x.lreason||"")+'" placeholder="'+t("left_reason")+'" style="width:100%"></div>';
 if(x.flag)h+='<div class="row"><input data-nt="'+x.id+'" value="'+esc(x.note||"")+'" placeholder="'+t("flag_note")+'" style="width:100%"></div>';
 h+=paySec(x);
 h+='<div class="row" style="flex-wrap:wrap"><a href="tel:'+esc(x.t.replace(/\s/g,""))+'" class="b" style="text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-weight:700;font-size:14px">'+t("call")+'</a><button class="b" data-rp="'+x.id+'">'+t("report_btn")+'</button><button class="b del" data-x="'+x.id+'">'+t("remove")+'</button></div></div>'}
-return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?(filter=="flag"&&data.length?t("none_flag"):t("empty")):t("loading")))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">'+t("sample")+'</button>':'')}
+return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?(filter=="left"?t("none_left"):filter=="flag"&&data.length?t("none_flag"):t("empty")):t("loading")))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">'+t("sample")+'</button>':'')}
 function find(id){return data.filter(function(x){return x.id==id})[0]}
 document.addEventListener("click",function(e){
-var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-f],[data-lang],[data-th],#gear,#addb");if(!t0)return;
+var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],#gear,#addb");if(!t0)return;
 var d0=t0.dataset;
 if(t0.id=="gear"){var sp=document.getElementById("set");sp.hidden=!sp.hidden;return}
 else if(d0.lang){lang=d0.lang;LS.set("mt_lang",lang);applyStatic()}
 else if(d0.th){theme=d0.th;LS.set("mt_theme",theme);applyTheme();applyStatic()}
 else if(d0.f){filter=d0.f}
 else if(t0.id=="addb"){var n=document.getElementById("n").value.trim();if(!n){alert(t("need_name"));return}
-persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:document.getElementById("t").value||"-",doc:[document.getElementById("e1").value,document.getElementById("e2").value,document.getElementById("e3").value],days:0,paid:false,amt:+document.getElementById("e4").value||DEF,photo:newPhoto,start:document.getElementById("e0").value});newPhoto="";document.getElementById("ph").value="";
-["n","p","t","e0","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.getElementById("e4").value=DEF;document.querySelector("details.add").open=false}
+var pl=document.getElementById("p").value.trim().toLowerCase(),tl=document.getElementById("t").value.replace(/\s/g,"");var dp=data.filter(function(x){return (pl&&x.p&&x.p.toLowerCase()==pl)||(tl&&x.t&&x.t.replace(/\s/g,"")==tl)})[0];if(dp&&!confirm(t("dup",dp.n+(dp.left?t("dup_left"):""))))return;
+persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:document.getElementById("t").value||"-",doc:[document.getElementById("e1").value,document.getElementById("e2").value,document.getElementById("e3").value],days:0,paid:false,amt:+document.getElementById("e4").value||DEF,photo:newPhoto,start:document.getElementById("e0").value,months:+document.getElementById("e5").value||0});newPhoto="";document.getElementById("ph").value="";
+["n","p","t","e0","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.getElementById("e4").value=DEF;document.getElementById("e5").value=24;document.querySelector("details.add").open=false}
 else if(d0.ap){var id2=d0.ap,z=find(id2),dv=document.querySelector('[data-pd="'+id2+'"]').value||today(),av2=+document.querySelector('[data-pa="'+id2+'"]').value;if(!av2){alert(t("need_amt"));return}z.pay=(z.pay||[]).concat([{id:String(Date.now()),d:dv,a:av2}]);persist(z)}
 else if(d0.dp){var pr=d0.dp.split("|"),z2=find(pr[0]);if(confirm(t("del_pay"))){z2.pay=(z2.pay||[]).filter(function(p){return p.id!=pr[1]});persist(z2)}else return}
 else if(d0.rp){report(find(d0.rp));return}
+else if(d0.lv){var z4=find(d0.lv);if(z4.left){z4.left=""}else{if(!confirm(t("left_conf")))return;z4.left=today();if(filter=="flag")filter="all"}persist(z4)}
 else if(d0.fl){var z3=find(d0.fl);z3.flag=!z3.flag;persist(z3)}
 else if(d0.s){seed()}else if(d0.o){var id=d0.o;open=open===id?null:id}
 else if(d0.k){var x=find(d0.k);x.days=Math.max(0,Math.min(7,x.days+ +d0.v));persist(x)}
@@ -268,6 +281,8 @@ if(t0.id=="s_amt"){var a=parseInt(t0.value,10);DEF=isNaN(a)||a<=0?15000:a;LS.set
 if(t0.id=="ph"&&t0.files[0]){shrink(t0.files[0],function(u){newPhoto=u})}
 if(d0.ph&&t0.files[0]){shrink(t0.files[0],function(u){var z=find(d0.ph);z.photo=u;persist(z)})}
 if(d0.nt){var zn=find(d0.nt);zn.note=t0.value;persist(zn)}
+if(d0.mo){var zm=find(d0.mo);zm.months=Math.max(0,+t0.value||0);persist(zm);setTimeout(render,0)}
+if(d0.lr){var zl=find(d0.lr);zl.lreason=t0.value;persist(zl)}
 if(d0.tt){var u2=find(d0.tt);u2.total=Math.max(0,+t0.value||0);persist(u2);setTimeout(render,0)}
 if(d0.am){var q=find(d0.am);q.amt=Math.max(0,+t0.value||0);persist(q);setTimeout(render,0)}
 if(d0.st){var w2=find(d0.st);w2.start=t0.value;persist(w2);setTimeout(render,0)}
