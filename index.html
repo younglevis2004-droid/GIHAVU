@@ -113,7 +113,7 @@ window.__ok=1;
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:db22900a707cdfec889bc5"};
+const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:96ed1403248c91dc889bc5"};
 var app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 
 var T={
@@ -176,7 +176,7 @@ function sample(){return[
 {id:4,n:"Emmanuel Mugisha",p:"RF 902 D",t:"0781 000 444",doc:[iso(25),iso(-2),iso(60)],days:2,paid:false,amt:15000}]}
 var L=document.getElementById("login"),A=document.getElementById("app");
 onAuthStateChanged(auth,function(u){L.hidden=!!u;A.hidden=!u;
-if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.map(function(x){var o=x.data();o.id=x.id;return o});render()},function(){msg=t("read_err");render()})}
+if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.map(function(x){var o=x.data();o.id=x.id;return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
 else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
 signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
@@ -184,7 +184,7 @@ document.getElementById("out").onclick=function(){signOut(auth)};
 function av(x){return x.photo?'<img class="av" src="'+x.photo+'" alt="">':'<span class="av">'+esc((x.n||"?").trim().charAt(0).toUpperCase())+'</span>'}
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};i.src=r.result};r.readAsDataURL(f)}
 var newPhoto="";
-function persist(x){setDoc(doc(db,"motari",x.id),x).catch(function(){alert(t("save_err"))})}
+function persist(x){setDoc(doc(db,"motari",x.id),x).catch(function(e){alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})}
 function seed(){sample().forEach(function(x){x.id=String(x.id);persist(x)})}
 function dn(i){return t(["n_permis","n_ins","n_insp"][i])}
 function left(d){if(!d)return 9999;var a=new Date(d+"T00:00:00"),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
