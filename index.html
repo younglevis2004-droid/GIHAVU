@@ -60,7 +60,7 @@ details.add summary{font-weight:700;cursor:pointer}
 #set{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .cardf{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:0 10px 8px}.cardf a.b{text-decoration:none;display:inline-block;color:var(--ink);font-size:12px;padding:6px 10px;border-radius:7px}
-#nav{position:fixed;left:0;top:0;bottom:0;width:60px;display:flex;flex-direction:column;background:var(--card);border-right:1px solid var(--line);padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:env(safe-area-inset-bottom,0px);justify-content:flex-start;z-index:8}
+#nav{overflow-y:auto;position:fixed;left:0;top:0;bottom:0;width:60px;display:flex;flex-direction:column;background:var(--card);border-right:1px solid var(--line);padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:env(safe-area-inset-bottom,0px);justify-content:flex-start;z-index:8}
 #nav button{background:none;border:0;border-left:3px solid transparent;color:var(--mut);font:inherit;font-size:10px;font-weight:700;padding:0 1px;flex:none;height:76px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;text-align:center;word-break:break-word}
 #nav button.on{color:var(--ink);border-left-color:var(--ok);background:var(--okbg)}#nav button:last-child{border-bottom:0}#nav .ic{font-size:24px;line-height:1.1}
 #app{padding-left:60px}
@@ -82,6 +82,12 @@ body{background:#fff!important}
 #rep{display:block!important;position:static!important;overflow:visible!important;color:#000!important;background:#fff!important;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:8px!important}
 #rep .rtool{display:none!important}
 }
+.dslot{margin:10px 0;padding-bottom:10px;border-bottom:1px solid var(--line)}.dh{font-weight:700;font-size:13px;margin-bottom:6px}
+.dslot img.dimg{width:100%;max-height:260px;object-fit:contain;border-radius:10px;background:rgba(128,128,128,.1);display:block;margin-bottom:8px}
+.dno .dic{display:block;font-size:56px;line-height:1.1;opacity:.22;filter:grayscale(1);margin-bottom:4px}
+.dno{padding:16px;text-align:center;color:var(--mut);font-size:12px;border:1px dashed var(--line);border-radius:10px;margin-bottom:8px}
+#rep img.dimg{width:100%;max-width:520px;height:auto;max-height:430px;object-fit:contain;margin:0;border-radius:6px}
+#rep .dpg{break-inside:avoid;page-break-inside:avoid}
 </style>
 </head>
 <body>
@@ -109,6 +115,11 @@ body{background:#fff!important}
 <div class="f" style="margin-bottom:12px"><input id="q" type="search" data-tp="talk_search" autocomplete="off"></div>
 <div id="list3"></div>
 </section>
+<section id="v-dos" hidden>
+<div class="sec" data-t="dos_title" style="margin-top:0"></div>
+<p class="sub" data-t="dos_hint"></p>
+<div id="dosl"></div>
+</section>
 <section id="v-add" hidden>
 <div class="sec" data-t="add" style="margin-top:0"></div>
 <div class="f">
@@ -133,9 +144,9 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v16</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v20</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
 </section>
-<nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="tot"><span class="ic">📊</span><span data-t="tab_tot"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
+<nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="tot"><span class="ic">📊</span><span data-t="tab_tot"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="dos"><span class="ic">📁</span><span data-t="tab_dos"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
 </div>
 </main>
 <div id="sv"></div>
@@ -145,7 +156,7 @@ body{background:#fff!important}
 window.__ok=1;
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{initializeFirestore,collection,doc,setDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{initializeFirestore,collection,doc,setDoc,deleteDoc,onSnapshot,getDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:96ed1403248c91dc889bc5"};
 var app=initializeApp(firebaseConfig),auth=getAuth(app),db=initializeFirestore(app,{experimentalForceLongPolling:true},"default");
 
@@ -164,7 +175,7 @@ call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho 
 empty:"Nta mumotari urongerwaho. Kanda “Ongeraho” hasi kugira ngo wongereho uwa mbere.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
 f_months:"Igihe cy’amasezerano (amezi)",c_months:"Igihe cy’amasezerano (amezi)",c_end:"Moto izaba iye ku wa",c_left:"Hasigaye",c_done:"Igihe cyarangiye",c_none:"Shyiraho itariki yo gutangira n’amezi y’amasezerano kugira ngo igihe gibarwe.",c_prog:"{0}% by’igihe cyarangiye",left_badge:"Yavuyemo",left_q:"Yavuye mu kazi?",left_btn:"Yavuyemo",back_btn:"Agaruke mu kazi",left_conf:"Ashyirwe mu bavuyemo? Amakuru ye yose arabikwa.",left_on:"Yavuye ku wa {0}",left_reason:"Impamvu (si ngombwa)",f_left:"Abavuyemo",none_left:"Nta mumotari wavuyemo.",dup:"Hari umumotari ufite iyi plaque cyangwa telefone: {0}. Ukomeze kumwongera?",dup_left:" (yavuyemo)",
-test_btn:"Gerageza kubika (isuzuma)",talk:"Vugana",remind:"Kwibutsa",t_call:"Hamagara",tab_home:"Abamotari",tab_tot:"Igiteranyo",tot_title:"Igiteranyo cya GIHAVU",tot_active:"Abamotari bakora",tot_contract:"Amasezerano yose",tot_paid:"Amaze kwishyurwa",tot_rem:"Asigaje kwishyurwa",tot_exp:"Yagombye kuba yaratanze kugeza ubu",tot_late:"Yatinze kwishyura",tot_month:"Yinjiye uku kwezi",tot_week:"Yinjiye iki cyumweru",tot_pct:"{0}% byishyuwe",tot_by:"Buri mumotari",tot_left:"Asigaje {0} · Yatinze {1}",tot_miss:"Hari abadafite itariki yo gutangira cyangwa amezi y’amasezerano ({0}). Imibare yabo ntiyuzuye.",tot_note:"Imibare ibarwa ku bamotari bakora gusa. “Yinjiye” ibarwa abose.",rp_print:"PDF / Print",rp_close:"Funga",tab_talk:"Vugana",talk_title:"Vugana n’umumotari",talk_search:"Shakisha izina, plaque cyangwa telefone",no_phone:"Nta telefone yanditse",none_found:"Nta mumotari ubonetse.",tab_pay:"Kwishyura",tab_add:"Ongeraho",tab_set:"Seting",wk_range:"Icyumweru",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
+test_btn:"Gerageza kubika (isuzuma)",talk:"Vugana",remind:"Kwibutsa",t_call:"Hamagara",tab_home:"Abamotari",tab_tot:"Igiteranyo",tab_dos:"Dosiye",dos_title:"Dosiye z’abamotari",dos_hint:"Kanda izina ry’umumotari ushyireho amafoto n’uwo muzi.",dos_mo:"Ifoto y’umumotari",dos_pl:"Ifoto ya moto (igaragaza purake)",dos_ins:"Ifoto y’ubwishingizi",dos_cg:"Ifoto ya karita grise",dos_au:"Ifoto ya authorization",dos_none:"Nta foto irimo",dos_add:"📷 Shyiraho ifoto",dos_chg:"📷 Hindura ifoto",dos_kin:"Umuntu umuzi (twamuhamagara)",dos_rel:"Isano",dos_kn:"Amazina ye",dos_kt:"Telefone ye",dos_r0:"Mama we",dos_r1:"Se",dos_r2:"Umuvandimwe",dos_r3:"Inshuti",dos_r4:"Undi",dos_pdf:"📄 Kuramo PDF y’amakuru",dos_rep:"Amakuru y’umumotari na moto",dos_load:"Birimo gufungura…",dos_big:"Amafoto ni manini cyane. Gerageza ifoto nto.",dos_err:"Ntibyakunze gufungura amafoto",dos_call:"Hamagara",tot_title:"Igiteranyo cya GIHAVU",tot_active:"Abamotari bakora",tot_contract:"Amasezerano yose",tot_paid:"Amaze kwishyurwa",tot_rem:"Asigaje kwishyurwa",tot_exp:"Yagombye kuba yaratanze kugeza ubu",tot_late:"Yatinze kwishyura",tot_month:"Yinjiye uku kwezi",tot_week:"Yinjiye iki cyumweru",tot_pct:"{0}% byishyuwe",tot_by:"Buri mumotari",tot_left:"Asigaje {0} · Yatinze {1}",tot_miss:"Hari abadafite itariki yo gutangira cyangwa amezi y’amasezerano ({0}). Imibare yabo ntiyuzuye.",tot_note:"Imibare ibarwa ku bamotari bakora gusa. “Yinjiye” ibarwa abose.",rp_print:"PDF / Print",rp_close:"Funga",tab_talk:"Vugana",talk_title:"Vugana n’umumotari",talk_search:"Shakisha izina, plaque cyangwa telefone",no_phone:"Nta telefone yanditse",none_found:"Nta mumotari ubonetse.",tab_pay:"Kwishyura",tab_add:"Ongeraho",tab_set:"Seting",wk_range:"Icyumweru",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
 settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
 rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
 months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
@@ -182,7 +193,7 @@ call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this dr
 empty:"No drivers yet. Tap “Add” below to add the first one.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
 f_months:"Contract length (months)",c_months:"Contract length (months)",c_end:"Moto becomes his on",c_left:"Remaining",c_done:"Period completed",c_none:"Set a start date and contract months to calculate the time.",c_prog:"{0}% of the time elapsed",left_badge:"Left",left_q:"Left the job?",left_btn:"Mark as left",back_btn:"Return to work",left_conf:"Move to former drivers? All data is kept.",left_on:"Left on {0}",left_reason:"Reason (optional)",f_left:"Left",none_left:"No drivers have left.",dup:"A driver with this plate or phone already exists: {0}. Add anyway?",dup_left:" (left)",
-test_btn:"Test saving",talk:"Talk",remind:"Remind",t_call:"Call",tab_home:"Drivers",tab_tot:"Totals",tot_title:"GIHAVU totals",tot_active:"Active drivers",tot_contract:"Total contracts",tot_paid:"Paid so far",tot_rem:"Still to be paid",tot_exp:"Should have paid so far",tot_late:"Behind on payments",tot_month:"Received this month",tot_week:"Received this week",tot_pct:"{0}% paid",tot_by:"Each driver",tot_left:"Remaining {0} · Behind {1}",tot_miss:"Some drivers have no start date or contract months ({0}). Their figures are incomplete.",tot_note:"Figures count active drivers only. “Received” counts everyone.",rp_print:"PDF / Print",rp_close:"Close",tab_talk:"Talk",talk_title:"Talk to a driver",talk_search:"Search name, plate or phone",no_phone:"No phone saved",none_found:"No driver found.",tab_pay:"Payments",tab_add:"Add",tab_set:"Settings",wk_range:"Week",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
+test_btn:"Test saving",talk:"Talk",remind:"Remind",t_call:"Call",tab_home:"Drivers",tab_tot:"Totals",tab_dos:"Files",dos_title:"Driver files",dos_hint:"Tap a driver to add photos and a contact person.",dos_mo:"Driver photo",dos_pl:"Moto photo (showing plate)",dos_ins:"Insurance photo",dos_cg:"Registration card photo",dos_au:"Authorization photo",dos_none:"No photo yet",dos_add:"📷 Add photo",dos_chg:"📷 Change photo",dos_kin:"Contact person who knows him",dos_rel:"Relation",dos_kn:"Name",dos_kt:"Phone",dos_r0:"Mother",dos_r1:"Father",dos_r2:"Sibling",dos_r3:"Friend",dos_r4:"Other",dos_pdf:"📄 Download PDF of details",dos_rep:"Driver and moto details",dos_load:"Loading…",dos_big:"Photos are too large. Try a smaller photo.",dos_err:"Could not open photos",dos_call:"Call",tot_title:"GIHAVU totals",tot_active:"Active drivers",tot_contract:"Total contracts",tot_paid:"Paid so far",tot_rem:"Still to be paid",tot_exp:"Should have paid so far",tot_late:"Behind on payments",tot_month:"Received this month",tot_week:"Received this week",tot_pct:"{0}% paid",tot_by:"Each driver",tot_left:"Remaining {0} · Behind {1}",tot_miss:"Some drivers have no start date or contract months ({0}). Their figures are incomplete.",tot_note:"Figures count active drivers only. “Received” counts everyone.",rp_print:"PDF / Print",rp_close:"Close",tab_talk:"Talk",talk_title:"Talk to a driver",talk_search:"Search name, plate or phone",no_phone:"No phone saved",none_found:"No driver found.",tab_pay:"Payments",tab_add:"Add",tab_set:"Settings",wk_range:"Week",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
 settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
 rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
@@ -204,7 +215,7 @@ document.getElementById("s_warn").value=WARN;document.getElementById("s_amt").va
 
 var tab="home",talk=null;
 function showTab(k){tab=k;if(k=="home")filter="all";if(k=="pay")filter="unpaid";
-var ids={home:"v-home",pay:"v-pay",add:"v-add",talk:"v-talk",tot:"v-tot",set:"set"};for(var n in ids)document.getElementById(ids[n]).hidden=(n!=k);
+var ids={home:"v-home",pay:"v-pay",add:"v-add",talk:"v-talk",tot:"v-tot",dos:"v-dos",set:"set"};for(var n in ids)document.getElementById(ids[n]).hidden=(n!=k);
 document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.tab==k)});window.scrollTo(0,0);render()}
 var open=null,data=[],ready=false,msg="",unsub=null;
 function iso(off){var d=new Date();d.setDate(d.getDate()+off);return d.toISOString().slice(0,10)}
@@ -229,7 +240,7 @@ document.getElementById("out").onclick=function(){signOut(auth)};
 document.getElementById("tst").onclick=function(){var r=document.getElementById("tres");r.textContent="…";var done=false,tm=setTimeout(function(){if(!done)r.textContent="⚠ Nta gisubizo mu masegonda 10. Umuyoboro urabuza Firebase / No response in 10s. The network blocks Firebase."},10000);
 setDoc(doc(db,"motari","_test"),{t:Date.now()}).then(function(){done=true;clearTimeout(tm);r.textContent="✓ Bikora: byabitswe kuri seriveri / Works: saved to server.";deleteDoc(doc(db,"motari","_test"))}).catch(function(e){done=true;clearTimeout(tm);r.textContent="✗ ["+((e&&e.code)||e)+"]"})};
 function av(x){return x.photo?'<img class="av" src="'+x.photo+'" alt="">':'<span class="av">'+esc((x.n||"?").trim().charAt(0).toUpperCase())+'</span>'}
-function shrink(f,cb){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};i.src=r.result};r.readAsDataURL(f)}
+function shrink(f,cb,mx,q){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,(mx||240)/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",q||.7))};i.src=r.result};r.readAsDataURL(f)}
 var newPhoto="";
 var svT=0,svH=0;
 function sv(m,bad,ms){var e=document.getElementById("sv");e.textContent=m;e.className=bad?"bad":"";e.style.display="block";clearTimeout(svH);if(ms)svH=setTimeout(function(){e.style.display="none"},ms)}
@@ -277,7 +288,24 @@ h+='<table><tr><td>'+t("paid_total")+'</td><td><b>'+fmt(f.paid)+' RWF</b></td></
 if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):f.ct>0?t("c_total",f.cw,fmt(x.amt)):t("due",f.wk,fmt(x.amt)))+'</td><td>'+fmt(f.base)+' RWF</td></tr>'+((f.tot>0||f.ct>0)&&x.start?'<tr><td>'+t("due",f.wk,fmt(x.amt))+'</td><td>'+fmt(f.exp)+' RWF</td></tr>':'')+'<tr><td>'+(f.rem<0?t("over"):(f.tot>0||f.ct>0)?t("remain_c"):t("remain"))+'</td><td><b>'+fmt(Math.abs(f.rem))+' RWF</b></td></tr>'+(f.late>0&&(f.tot>0||f.ct>0)?'<tr><td>'+t("late")+'</td><td><b>'+fmt(f.late)+' RWF</b></td></tr>':'');
 h+='</table>';
 var R=document.getElementById("rep");R.innerHTML='<div class="rtool"><button class="b main" data-rprint="1">🖨 '+t("rp_print")+'</button><button class="b" data-rclose="1">✕ '+t("rp_close")+'</button></div>'+h;R.classList.add("show");R.scrollTop=0;repOld=document.title;document.title=t("rp_title")+" - "+x.n}
-function render(){if(tab=="talk")renderTalk();if(tab=="tot")renderTot();
+
+var dosC={},dosO=null,DK=["mo","pl","ins","cg","au"];
+function loadDos(id){if(dosC[id])return;dosC[id]="load";getDoc(doc(db,"dosiye",id)).then(function(q){dosC[id]=q.exists()?q.data():{};render()}).catch(function(e){dosC[id]={};sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000);render()})}
+function renderDos(){var ae=document.activeElement;if(ae&&ae.tagName=="INPUT"&&ae.type!="file"&&document.getElementById("dosl").contains(ae))return;var act=data.filter(function(x){return !x.left}).sort(function(a,b){return String(a.n).localeCompare(String(b.n))});
+document.getElementById("dosl").innerHTML=act.map(function(x){var o=dosO===x.id,h='<div class="card"><button class="head" data-do="'+x.id+'" aria-expanded="'+o+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span></span></button>';
+if(o){var c=dosC[x.id];if(!c)loadDos(x.id);if(!c||c=="load")h+='<div class="body"><p class="sub">'+t("dos_load")+'</p></div>';else{h+='<div class="body">';
+DK.forEach(function(k){h+='<div class="dslot"><div class="dh">'+t("dos_"+k)+'</div>'+(c[k]?'<img class="dimg" src="'+c[k]+'" alt="">':'<div class="dno"><span class="dic">'+({mo:"👤",pl:"🏍",ins:"🛡️",cg:"📄",au:"📝"})[k]+'</span>'+t("dos_none")+'</div>')+'<label class="pb">'+t(c[k]?"dos_chg":"dos_add")+'<input type="file" accept="image/*" data-di="'+x.id+'|'+k+'" hidden></label></div>'});
+h+='<div class="dh" style="margin-top:12px">'+t("dos_kin")+'</div><div class="row"><span>'+t("dos_rel")+'</span><select data-kr="'+x.id+'">'+[0,1,2,3,4].map(function(i){var v=t("dos_r"+i);return '<option'+((x.kr||t("dos_r0"))==v?' selected':'')+'>'+v+'</option>'}).join("")+'</select></div>'+
+'<div class="row"><span>'+t("dos_kn")+'</span><input type="text" value="'+esc(x.kn||"")+'" data-kn="'+x.id+'" style="width:60%"></div><div class="row"><span>'+t("dos_kt")+'</span><input type="tel" inputmode="tel" value="'+esc(x.kt||"")+'" data-kt="'+x.id+'" style="width:60%"></div>'+
+'<div class="cardf">'+(waNum(x.kt)?'<a class="b" href="tel:+'+waNum(x.kt)+'">📞 '+t("dos_call")+'</a>':'')+'<button class="b main" data-dr="'+x.id+'">'+t("dos_pdf")+'</button></div></div>'}}
+return h+'</div>'}).join("")||'<p class="sub">'+(ready?t("none_found"):t("loading"))+'</p>'}
+function dosReport(id){var x=find(id),c=dosC[id]||{};
+var h='<h1>'+t("dos_rep")+'</h1><p>'+t("rp_date")+': '+fdate(today())+'</p><div class="rh">'+(c.mo?'<img src="'+c.mo+'" alt="">':x.photo?'<img src="'+x.photo+'" alt="">':'')+'<div><h2>'+esc(x.n)+'</h2><p>'+t("rp_plate")+': '+esc(x.p)+'</p><p>'+t("rp_phone")+': '+esc(x.t)+'</p></div></div>';
+if(x.kn||x.kt)h+='<h3>'+t("dos_kin")+'</h3><table><tr><td>'+t("dos_rel")+'</td><td>'+esc(x.kr||t("dos_r0"))+'</td></tr><tr><td>'+t("dos_kn")+'</td><td>'+esc(x.kn||"")+'</td></tr><tr><td>'+t("dos_kt")+'</td><td>'+esc(x.kt||"")+'</td></tr></table>';
+["pl","ins","cg","au"].forEach(function(k){if(c[k])h+='<div class="dpg"><h3>'+t("dos_"+k)+'</h3><img class="dimg" src="'+c[k]+'" alt=""></div>'});
+if(c.mo)h+='<div class="dpg"><h3>'+t("dos_mo")+'</h3><img class="dimg" src="'+c.mo+'" alt=""></div>';
+var R=document.getElementById("rep");R.innerHTML='<div class="rtool"><button class="b main" data-rprint="1">🖨 '+t("rp_print")+'</button><button class="b" data-rclose="1">✕ '+t("rp_close")+'</button></div>'+h;R.classList.add("show");R.scrollTop=0;repOld=document.title;document.title=t("dos_rep")+" - "+x.n}
+function render(){if(tab=="dos")renderDos();if(tab=="talk")renderTalk();if(tab=="tot")renderTot();
 var act=data.filter(function(x){return !x.left}),gone=data.filter(function(x){return x.left});var c={bad:0,warn:0,ok:0};act.forEach(function(x){c[st(x)]++});
 document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
 var nf=act.filter(function(x){return x.flag}).length;
@@ -326,7 +354,7 @@ return '<div class="card"><div class="head" style="cursor:default">'+av(x)+'<spa
 document.addEventListener("input",function(e){if(e.target.id=="q")renderTalk()});
 function find(id){return data.filter(function(x){return x.id==id})[0]}
 document.addEventListener("click",function(e){
-var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],[data-tab],[data-tk],[data-rprint],[data-rclose],#gear,#addb");if(!t0)return;
+var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],[data-tab],[data-tk],[data-rprint],[data-rclose],[data-do],[data-dr],#gear,#addb");if(!t0)return;
 var d0=t0.dataset;
 if(d0.tab){showTab(d0.tab);return}
 else if(d0.tk){talk=(talk===d0.tk?null:d0.tk)}
@@ -340,6 +368,8 @@ persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:d
 else if(d0.ap){var id2=d0.ap,z=find(id2),dv=document.querySelector('[data-pd="'+id2+'"]').value||today(),av2=+document.querySelector('[data-pa="'+id2+'"]').value;if(!av2){alert(t("need_amt"));return}z.pay=(z.pay||[]).concat([{id:String(Date.now()),d:dv,a:av2}]);persist(z)}
 else if(d0.dp){var pr=d0.dp.split("|"),z2=find(pr[0]);if(confirm(t("del_pay"))){z2.pay=(z2.pay||[]).filter(function(p){return p.id!=pr[1]});persist(z2)}else return}
 else if(d0.rp){report(find(d0.rp));return}
+else if(d0.do){dosO=(dosO===d0.do?null:d0.do)}
+else if(d0.dr){dosReport(d0.dr);return}
 else if(d0.rprint){window.print();return}
 else if(d0.rclose){document.getElementById("rep").classList.remove("show");if(repOld)document.title=repOld;return}
 else if(d0.lv){var z4=find(d0.lv);if(z4.left){z4.left=""}else{if(!confirm(t("left_conf")))return;z4.left=today();if(filter=="flag")filter="all"}persist(z4)}
@@ -347,7 +377,7 @@ else if(d0.fl){var z3=find(d0.fl);z3.flag=!z3.flag;persist(z3)}
 else if(d0.s){seed()}else if(d0.o){var id=d0.o;open=open===id?null:id}
 else if(d0.k){var x=find(d0.k);x.days=Math.max(0,Math.min(7,x.days+ +d0.v));persist(x)}
 else if(d0.p){var y=find(d0.p);y.paidWk=(y.paidWk==mon())?"":mon();persist(y)}
-else if(d0.x){if(confirm(t("rm_confirm"))){deleteDoc(doc(db,"motari",d0.x));open=null}else return}
+else if(d0.x){if(confirm(t("rm_confirm"))){deleteDoc(doc(db,"motari",d0.x));deleteDoc(doc(db,"dosiye",d0.x)).catch(function(){});open=null}else return}
 render()});
 document.addEventListener("change",function(e){var t0=e.target,d0=t0.dataset;
 if(t0.id=="s_warn"){var w=parseInt(t0.value,10);WARN=isNaN(w)?30:Math.max(0,Math.min(365,w));LS.set("mt_warn",WARN);t0.value=WARN;setTimeout(render,0);return}
@@ -355,6 +385,9 @@ if(t0.id=="s_msg"){var mv=t0.value.trim();LS.set("mt_msg",(!mv||mv==t("msg_def")
 if(t0.id=="s_amt"){var a=parseInt(t0.value,10);DEF=isNaN(a)||a<=0?15000:a;LS.set("mt_amt",DEF);t0.value=DEF;document.getElementById("e4").value=DEF;return}
 if(t0.id=="ph"&&t0.files[0]){shrink(t0.files[0],function(u){newPhoto=u})}
 if(d0.ph&&t0.files[0]){shrink(t0.files[0],function(u){var z=find(d0.ph);z.photo=u;persist(z)})}
+if(d0.di){var dp2=d0.di.split("|"),f0=t0.files[0];if(f0){sv(t("sv_wait"));shrink(f0,function(u){var c=dosC[dp2[0]]=dosC[dp2[0]]||{};var tot=u.length;DK.forEach(function(k){if(k!=dp2[1]&&c[k])tot+=c[k].length});if(tot>950000){sv("",false);document.getElementById("sv").style.display="none";alert(t("dos_big"));return}
+var o={};o[dp2[1]]=u;setDoc(doc(db,"dosiye",dp2[0]),o,{merge:true}).then(function(){c[dp2[1]]=u;sv(t("sv_ok"),false,2500);render()}).catch(function(e){document.getElementById("sv").style.display="none";alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})},800,.6)}return}
+if(d0.kr||d0.kn||d0.kt){var zk=find(d0.kr||d0.kn||d0.kt);if(zk){if(d0.kr)zk.kr=t0.value;if(d0.kn)zk.kn=t0.value;if(d0.kt)zk.kt=t0.value;persist(zk)}return}
 if(d0.nt){var zn=find(d0.nt);zn.note=t0.value;persist(zn)}
 if(d0.mo){var zm=find(d0.mo);zm.months=Math.max(0,+t0.value||0);persist(zm);setTimeout(render,0)}
 if(d0.lr){var zl=find(d0.lr);zl.lreason=t0.value;persist(zl)}
