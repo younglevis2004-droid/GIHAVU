@@ -144,7 +144,7 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v20</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v21</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
 </section>
 <nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="tot"><span class="ic">📊</span><span data-t="tab_tot"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="dos"><span class="ic">📁</span><span data-t="tab_dos"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
 </div>
@@ -156,7 +156,7 @@ body{background:#fff!important}
 window.__ok=1;
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{initializeFirestore,collection,doc,setDoc,deleteDoc,onSnapshot,getDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{initializeFirestore,collection,doc,setDoc,deleteDoc,onSnapshot,getDoc,query,where,documentId}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:96ed1403248c91dc889bc5"};
 var app=initializeApp(firebaseConfig),auth=getAuth(app),db=initializeFirestore(app,{experimentalForceLongPolling:true},"default");
 
@@ -232,7 +232,7 @@ function waNum(s){var d=String(s||"").replace(/\D/g,"");if(d.length<9)return"";i
 function waLink(x){var n=waNum(x.t);if(!n)return"";var tpl=LS.get("mt_msg","")||t("msg_def");var m=tpl.split("{name}").join(x.n).split("{amt}").join(fmtc(x.amt));return"https://wa.me/"+n+"?text="+encodeURIComponent(m)}
 var L=document.getElementById("login"),A=document.getElementById("app");
 onAuthStateChanged(auth,function(u){L.hidden=!!u;A.hidden=!u;
-if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.filter(function(x){return x.id.charAt(0)!="_"}).map(function(x){var o=x.data();o.id=x.id;if(!o.doc)o.doc=["","",""];return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
+if(u){unsub=onSnapshot(query(collection(db,"motari"),where(documentId(),"<","_")),function(q){ready=true;msg="";data=q.docs.filter(function(x){return x.id.charAt(0)!="_"}).map(function(x){var o=x.data();o.id=x.id;if(!o.doc)o.doc=["","",""];return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
 else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
 signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
@@ -290,7 +290,7 @@ h+='</table>';
 var R=document.getElementById("rep");R.innerHTML='<div class="rtool"><button class="b main" data-rprint="1">🖨 '+t("rp_print")+'</button><button class="b" data-rclose="1">✕ '+t("rp_close")+'</button></div>'+h;R.classList.add("show");R.scrollTop=0;repOld=document.title;document.title=t("rp_title")+" - "+x.n}
 
 var dosC={},dosO=null,DK=["mo","pl","ins","cg","au"];
-function loadDos(id){if(dosC[id])return;dosC[id]="load";getDoc(doc(db,"dosiye",id)).then(function(q){dosC[id]=q.exists()?q.data():{};render()}).catch(function(e){dosC[id]={};sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000);render()})}
+function loadDos(id){if(dosC[id])return;dosC[id]="load";getDoc(doc(db,"motari","_d"+id)).then(function(q){dosC[id]=q.exists()?q.data():{};render()}).catch(function(e){dosC[id]={};sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000);render()})}
 function renderDos(){var ae=document.activeElement;if(ae&&ae.tagName=="INPUT"&&ae.type!="file"&&document.getElementById("dosl").contains(ae))return;var act=data.filter(function(x){return !x.left}).sort(function(a,b){return String(a.n).localeCompare(String(b.n))});
 document.getElementById("dosl").innerHTML=act.map(function(x){var o=dosO===x.id,h='<div class="card"><button class="head" data-do="'+x.id+'" aria-expanded="'+o+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span></span></button>';
 if(o){var c=dosC[x.id];if(!c)loadDos(x.id);if(!c||c=="load")h+='<div class="body"><p class="sub">'+t("dos_load")+'</p></div>';else{h+='<div class="body">';
@@ -377,7 +377,7 @@ else if(d0.fl){var z3=find(d0.fl);z3.flag=!z3.flag;persist(z3)}
 else if(d0.s){seed()}else if(d0.o){var id=d0.o;open=open===id?null:id}
 else if(d0.k){var x=find(d0.k);x.days=Math.max(0,Math.min(7,x.days+ +d0.v));persist(x)}
 else if(d0.p){var y=find(d0.p);y.paidWk=(y.paidWk==mon())?"":mon();persist(y)}
-else if(d0.x){if(confirm(t("rm_confirm"))){deleteDoc(doc(db,"motari",d0.x));deleteDoc(doc(db,"dosiye",d0.x)).catch(function(){});open=null}else return}
+else if(d0.x){if(confirm(t("rm_confirm"))){deleteDoc(doc(db,"motari",d0.x));deleteDoc(doc(db,"motari","_d"+d0.x)).catch(function(){});open=null}else return}
 render()});
 document.addEventListener("change",function(e){var t0=e.target,d0=t0.dataset;
 if(t0.id=="s_warn"){var w=parseInt(t0.value,10);WARN=isNaN(w)?30:Math.max(0,Math.min(365,w));LS.set("mt_warn",WARN);t0.value=WARN;setTimeout(render,0);return}
@@ -386,7 +386,7 @@ if(t0.id=="s_amt"){var a=parseInt(t0.value,10);DEF=isNaN(a)||a<=0?15000:a;LS.set
 if(t0.id=="ph"&&t0.files[0]){shrink(t0.files[0],function(u){newPhoto=u})}
 if(d0.ph&&t0.files[0]){shrink(t0.files[0],function(u){var z=find(d0.ph);z.photo=u;persist(z)})}
 if(d0.di){var dp2=d0.di.split("|"),f0=t0.files[0];if(f0){sv(t("sv_wait"));shrink(f0,function(u){var c=dosC[dp2[0]]=dosC[dp2[0]]||{};var tot=u.length;DK.forEach(function(k){if(k!=dp2[1]&&c[k])tot+=c[k].length});if(tot>950000){sv("",false);document.getElementById("sv").style.display="none";alert(t("dos_big"));return}
-var o={};o[dp2[1]]=u;setDoc(doc(db,"dosiye",dp2[0]),o,{merge:true}).then(function(){c[dp2[1]]=u;sv(t("sv_ok"),false,2500);render()}).catch(function(e){document.getElementById("sv").style.display="none";alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})},800,.6)}return}
+var o={};o[dp2[1]]=u;setDoc(doc(db,"motari","_d"+dp2[0]),o,{merge:true}).then(function(){c[dp2[1]]=u;sv(t("sv_ok"),false,2500);render()}).catch(function(e){document.getElementById("sv").style.display="none";alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})},800,.6)}return}
 if(d0.kr||d0.kn||d0.kt){var zk=find(d0.kr||d0.kn||d0.kt);if(zk){if(d0.kr)zk.kr=t0.value;if(d0.kn)zk.kn=t0.value;if(d0.kt)zk.kt=t0.value;persist(zk)}return}
 if(d0.nt){var zn=find(d0.nt);zn.note=t0.value;persist(zn)}
 if(d0.mo){var zm=find(d0.mo);zm.months=Math.max(0,+t0.value||0);persist(zm);setTimeout(render,0)}
