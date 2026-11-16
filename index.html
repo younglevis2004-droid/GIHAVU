@@ -15,7 +15,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
-main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
+main{max-width:560px;margin:0 auto;padding:20px 16px 110px}
 h1{font-size:28px;margin:4px 0 2px;letter-spacing:-.5px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .sub{color:var(--mut);margin:0 0 16px;font-size:14px}
@@ -60,8 +60,11 @@ details.add summary{font-weight:700;cursor:pointer}
 #set{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .cardf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 14px 12px}.cardf a.b{text-decoration:none;display:inline-block;color:var(--ink)}
+#nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:8}
+#nav button{flex:1;background:none;border:0;border-top:3px solid transparent;color:var(--mut);font:inherit;font-size:11px;font-weight:700;padding:7px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
+#nav button.on{color:var(--ink);border-top-color:var(--ok)}#nav .ic{font-size:21px;line-height:1.1}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.chips .b{padding:6px 12px;font-size:13px}
-#sv{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:9px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:9;background:var(--btn);color:var(--btnink);max-width:92vw;text-align:center}#sv.bad{background:var(--bad);color:#fff}
+#sv{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));padding:9px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:9;background:var(--btn);color:var(--btnink);max-width:92vw;text-align:center}#sv.bad{background:var(--bad);color:#fff}
 #rep{display:none}
 #rep h1{font-size:22px;margin:0 0 4px}#rep h2{font-size:18px;margin:0 0 4px}#rep h3{font-size:15px;margin:14px 0 4px}#rep p{margin:2px 0}
 #rep table{width:100%;border-collapse:collapse;margin:4px 0 10px}
@@ -79,20 +82,20 @@ body{background:#fff!important}
 <main>
 <section id="login"><h1>GIHAVU</h1><p class="sub" data-t="login_sub"></p><div class="f"><label><span data-t="email"></span><input id="em" type="email" autocomplete="username"></label><label><span data-t="pass"></span><input id="pw" type="password" autocomplete="current-password"></label><button class="b main" id="lb" data-t="signin"></button><p id="le" class="d bad"></p></div></section>
 <div id="app" hidden>
-<div class="top"><h1>GIHAVU</h1><button class="b" id="gear" aria-label="Settings">⚙</button></div>
+<div class="top"><h1>GIHAVU</h1></div>
 <p class="sub" data-t="app_sub"></p>
-<section id="set" hidden>
-<div class="sec" data-t="settings" style="margin-top:0"></div>
-<div class="sec" data-t="lang"></div>
-<div class="seg"><button class="b" data-lang="rw">Kinyarwanda</button><button class="b" data-lang="en">English</button></div>
-<div class="sec" data-t="theme"></div>
-<div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
-<div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
-<p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v6</p>
-</section>
+<section id="v-home">
 <div class="sum" id="sum"></div>
-<details class="add"><summary data-t="add"></summary>
+<div class="chips"><button class="b" data-f="all" id="fa"></button><button class="b" data-f="flag" id="ff"></button><button class="b" data-f="left" id="fl"></button></div>
+<div id="list"></div>
+</section>
+<section id="v-pay" hidden>
+<div class="sumbox" id="wk"></div>
+<div class="chips"><button class="b" data-f="unpaid" id="fu"></button><button class="b" data-f="paidw" id="fp"></button></div>
+<div id="list2"></div>
+</section>
+<section id="v-add" hidden>
+<div class="sec" data-t="add" style="margin-top:0"></div>
 <div class="f">
 <label><span data-t="f_name"></span><input id="n" data-tp="ph_name"></label>
 <label><span data-t="f_plate"></span><input id="p" placeholder="RF 123 A"></label>
@@ -105,11 +108,20 @@ body{background:#fff!important}
 <label><span data-t="f_week"></span><input id="e4" type="number" inputmode="numeric"></label>
 <label><span data-t="f_months"></span><input id="e5" type="number" inputmode="numeric" value="24"></label>
 <button class="b main" id="addb" data-t="save_driver"></button>
-</div></details>
-<div class="sumbox" id="wk"></div>
-<div class="chips"><button class="b" data-f="all" id="fa"></button><button class="b" data-f="unpaid" id="fu"></button><button class="b" data-f="paidw" id="fp"></button><button class="b" data-f="flag" id="ff"></button><button class="b" data-f="left" id="fl"></button></div>
-<div id="list"></div>
-<p class="note"><button class="b" id="out" data-t="signout"></button></p></div>
+</div>
+</section>
+<section id="set" hidden>
+<div class="sec" data-t="settings" style="margin-top:0"></div>
+<div class="sec" data-t="lang"></div>
+<div class="seg"><button class="b" data-lang="rw">Kinyarwanda</button><button class="b" data-lang="en">English</button></div>
+<div class="sec" data-t="theme"></div>
+<div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
+<div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
+<p class="note" data-t="dev_note"></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v7</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+</section>
+<nav id="nav"><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button></nav>
+</div>
 </main>
 <div id="sv"></div>
 <div id="rep"></div>
@@ -134,10 +146,10 @@ paid_week:"Yishyuye iki cyumweru",paid:"Yishyuye",notpaid:"Ntiyishyuye",
 pay_h:"Ayo yatanze",date:"Itariki",amount:"Amafaranga (RWF)",add_pay:"Ongeraho ayo yatanze",no_pay:"Nta mafaranga aranditswe.",paid_total:"Yishyuye yose",this_month:"Uku kwezi",time_work:"Igihe amaze akora",
 due:"Agomba kwishyura ({0} × {1})",over:"Yarenzeho",remain:"Asigaje",hint_rem:"Shyiraho itariki yo gutangira cyangwa “Ayose agomba kwishyura” kugira ngo ibare asigaye.",del_pay:"Usibye iri tangwa?",need_amt:"Andika amafaranga yatanze.",
 call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho uyu mumotari?",
-empty:"Nta mumotari urongerwaho. Ongeraho uwa mbere hejuru.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
+empty:"Nta mumotari urongerwaho. Kanda “Ongeraho” hasi kugira ngo wongereho uwa mbere.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
 f_months:"Igihe cy’amasezerano (amezi)",c_months:"Igihe cy’amasezerano (amezi)",c_end:"Moto izaba iye ku wa",c_left:"Hasigaye",c_done:"Igihe cyarangiye",c_none:"Shyiraho itariki yo gutangira n’amezi y’amasezerano kugira ngo igihe gibarwe.",c_prog:"{0}% by’igihe cyarangiye",left_badge:"Yavuyemo",left_q:"Yavuye mu kazi?",left_btn:"Yavuyemo",back_btn:"Agaruke mu kazi",left_conf:"Ashyirwe mu bavuyemo? Amakuru ye yose arabikwa.",left_on:"Yavuye ku wa {0}",left_reason:"Impamvu (si ngombwa)",f_left:"Abavuyemo",none_left:"Nta mumotari wavuyemo.",dup:"Hari umumotari ufite iyi plaque cyangwa telefone: {0}. Ukomeze kumwongera?",dup_left:" (yavuyemo)",
-test_btn:"Gerageza kubika (isuzuma)",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
+test_btn:"Gerageza kubika (isuzuma)",tab_home:"Abamotari",tab_pay:"Kwishyura",tab_add:"Ongeraho",tab_set:"Igenamiterere",wk_range:"Icyumweru",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
 settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
 rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
 months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
@@ -152,10 +164,10 @@ paid_week:"Paid this week",paid:"Paid",notpaid:"Not paid",
 pay_h:"Payments",date:"Date",amount:"Amount (RWF)",add_pay:"Add payment",no_pay:"No payments recorded.",paid_total:"Total paid",this_month:"This month",time_work:"Time working",
 due:"Due ({0} wks × {1})",over:"Overpaid",remain:"Remaining",hint_rem:"Set a start date or “Total to pay” to calculate the remaining amount.",del_pay:"Delete this payment?",need_amt:"Enter the amount paid.",
 call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this driver?",
-empty:"No drivers yet. Add the first one above.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
+empty:"No drivers yet. Tap “Add” below to add the first one.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
 f_months:"Contract length (months)",c_months:"Contract length (months)",c_end:"Moto becomes his on",c_left:"Remaining",c_done:"Period completed",c_none:"Set a start date and contract months to calculate the time.",c_prog:"{0}% of the time elapsed",left_badge:"Left",left_q:"Left the job?",left_btn:"Mark as left",back_btn:"Return to work",left_conf:"Move to former drivers? All data is kept.",left_on:"Left on {0}",left_reason:"Reason (optional)",f_left:"Left",none_left:"No drivers have left.",dup:"A driver with this plate or phone already exists: {0}. Add anyway?",dup_left:" (left)",
-test_btn:"Test saving",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
+test_btn:"Test saving",tab_home:"Drivers",tab_pay:"Payments",tab_add:"Add",tab_set:"Settings",wk_range:"Week",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
 settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
 rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
@@ -175,6 +187,10 @@ document.querySelectorAll("[data-lang]").forEach(function(b){b.classList.toggle(
 document.querySelectorAll("[data-th]").forEach(function(b){b.classList.toggle("main",b.dataset.th==theme)});
 document.getElementById("s_warn").value=WARN;document.getElementById("s_amt").value=DEF;document.getElementById("e4").value=DEF;document.getElementById("s_msg").value=LS.get("mt_msg","")||t("msg_def")}
 
+var tab="home";
+function showTab(k){tab=k;if(k=="home")filter="all";if(k=="pay")filter="unpaid";
+var ids={home:"v-home",pay:"v-pay",add:"v-add",set:"set"};for(var n in ids)document.getElementById(ids[n]).hidden=(n!=k);
+document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.tab==k)});window.scrollTo(0,0);render()}
 var open=null,data=[],ready=false,msg="",unsub=null;
 function iso(off){var d=new Date();d.setDate(d.getDate()+off);return d.toISOString().slice(0,10)}
 function sample(){return[
@@ -250,14 +266,15 @@ var act=data.filter(function(x){return !x.left}),gone=data.filter(function(x){re
 document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
 var nf=act.filter(function(x){return x.flag}).length;
 var up=act.filter(function(x){return !paidWk(x)}),pw=act.filter(paidWk);
-document.getElementById("wk").innerHTML='<div><span>✓ '+t("f_paidw")+'</span><b>'+pw.length+'</b></div><div><span>✗ '+t("f_unpaid")+'</span><b>'+up.length+'</b></div><div><span>'+t("wk_amt")+'</span><b>'+fmtc(up.reduce(function(s,x){return s+(+x.amt||0)},0))+' RWF</b></div>';
+var wm=mon(),we=new Date(wm+"T00:00:00");we.setDate(we.getDate()+6);var wend=we.getFullYear()+"-"+pad2(we.getMonth()+1)+"-"+pad2(we.getDate());
+document.getElementById("wk").innerHTML='<div><span>'+t("wk_range")+'</span><b>'+fdate(wm)+' – '+fdate(wend)+'</b></div><div><span>✓ '+t("f_paidw")+'</span><b>'+pw.length+'</b></div><div><span>✗ '+t("f_unpaid")+'</span><b>'+up.length+'</b></div><div><span>'+t("wk_amt")+'</span><b>'+fmtc(up.reduce(function(s,x){return s+(+x.amt||0)},0))+' RWF</b></div>';
 var fu=document.getElementById("fu"),fp=document.getElementById("fp");fu.textContent=t("f_unpaid")+" ("+up.length+")";fp.textContent=t("f_paidw")+" ("+pw.length+")";fu.classList.toggle("main",filter=="unpaid");fp.classList.toggle("main",filter=="paidw");
 var fa=document.getElementById("fa"),ff=document.getElementById("ff");
 var fl=document.getElementById("fl");fl.textContent=t("f_left")+" ("+gone.length+")";fl.classList.toggle("main",filter=="left");fa.textContent=t("f_all")+" ("+act.length+")";ff.textContent=t("f_flag")+" ("+nf+")";
 fa.classList.toggle("main",filter=="all");ff.classList.toggle("main",filter=="flag");
 var o={bad:0,warn:1,ok:2};
 var shown=(filter=="left"?gone:filter=="unpaid"?up:filter=="paidw"?pw:filter=="flag"?act.filter(function(x){return x.flag}):act).slice().sort(function(a,b){return o[st(a)]-o[st(b)]});
-document.getElementById("list").innerHTML=shown.map(function(x){
+var LST=document.getElementById(tab=="pay"?"list2":"list");document.getElementById(tab=="pay"?"list":"list2").innerHTML="";LST.innerHTML=shown.map(function(x){
 var s=st(x),m=Math.min.apply(null,x.doc.map(left));
 var h='<div class="card '+(x.left?"":s)+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span>'+(x.flag?'<br><span class="flag">⚠ '+t("flag_badge")+'</span>':'')+'</span>'+(x.left?'<span class="tag" style="background:var(--line);color:var(--mut)">'+t("left_badge")+'</span>':'<span class="tag '+s+'">'+(s=="bad"?t("tag_bad"):s=="warn"?t("tag_days",m):t("tag_ok"))+'</span>')+'</button>';
 if(!x.left){var pwx=paidWk(x),wl=waLink(x);h+='<div class="cardf"><span class="tag '+(pwx?"ok":"bad")+'">'+(pwx?t("paid"):t("notpaid"))+'</span>'+(wl?'<a class="b" href="'+wl+'" target="_blank" rel="noopener">💬 '+t("wa_btn")+'</a>':'')+(pwx?'':'<button class="b" data-p="'+x.id+'">✓ '+t("mark_paid")+'</button>')+'</div>'}
@@ -278,16 +295,16 @@ h+='<div class="row" style="flex-wrap:wrap"><a href="tel:'+esc(x.t.replace(/\s/g
 return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?(filter=="left"?t("none_left"):filter=="unpaid"&&act.length?t("none_unpaid"):filter=="paidw"&&act.length?t("none_paidw"):filter=="flag"&&data.length?t("none_flag"):t("empty")):t("loading")))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">'+t("sample")+'</button>':'')}
 function find(id){return data.filter(function(x){return x.id==id})[0]}
 document.addEventListener("click",function(e){
-var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],#gear,#addb");if(!t0)return;
+var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],[data-tab],#gear,#addb");if(!t0)return;
 var d0=t0.dataset;
-if(t0.id=="gear"){var sp=document.getElementById("set");sp.hidden=!sp.hidden;return}
+if(d0.tab){showTab(d0.tab);return}
 else if(d0.lang){lang=d0.lang;LS.set("mt_lang",lang);applyStatic()}
 else if(d0.th){theme=d0.th;LS.set("mt_theme",theme);applyTheme();applyStatic()}
 else if(d0.f){filter=d0.f}
 else if(t0.id=="addb"){var n=document.getElementById("n").value.trim();if(!n){alert(t("need_name"));return}
 var pl=document.getElementById("p").value.trim().toLowerCase(),tl=document.getElementById("t").value.replace(/\s/g,"");var dp=data.filter(function(x){return (pl&&x.p&&x.p.toLowerCase()==pl)||(tl&&x.t&&x.t.replace(/\s/g,"")==tl)})[0];if(dp&&!confirm(t("dup",dp.n+(dp.left?t("dup_left"):""))))return;
 persist({id:String(Date.now()),n:n,p:document.getElementById("p").value||"-",t:document.getElementById("t").value||"-",doc:[document.getElementById("e1").value,document.getElementById("e2").value,document.getElementById("e3").value],days:0,paid:false,amt:+document.getElementById("e4").value||DEF,photo:newPhoto,start:document.getElementById("e0").value,months:+document.getElementById("e5").value||0});newPhoto="";document.getElementById("ph").value="";
-["n","p","t","e0","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.getElementById("e4").value=DEF;document.getElementById("e5").value=24;document.querySelector("details.add").open=false}
+["n","p","t","e0","e1","e2","e3"].forEach(function(i){document.getElementById(i).value=""});document.getElementById("e4").value=DEF;document.getElementById("e5").value=24;showTab("home")}
 else if(d0.ap){var id2=d0.ap,z=find(id2),dv=document.querySelector('[data-pd="'+id2+'"]').value||today(),av2=+document.querySelector('[data-pa="'+id2+'"]').value;if(!av2){alert(t("need_amt"));return}z.pay=(z.pay||[]).concat([{id:String(Date.now()),d:dv,a:av2}]);persist(z)}
 else if(d0.dp){var pr=d0.dp.split("|"),z2=find(pr[0]);if(confirm(t("del_pay"))){z2.pay=(z2.pay||[]).filter(function(p){return p.id!=pr[1]});persist(z2)}else return}
 else if(d0.rp){report(find(d0.rp));return}
