@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Abamotari</title>
+<title>GIHAVU</title>
+<meta name="apple-mobile-web-app-title" content="GIHAVU">
 <script>try{var th0=localStorage.getItem("mt_theme");if(th0=="light"||th0=="dark")document.documentElement.setAttribute("data-theme",th0)}catch(e){}</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -75,9 +76,9 @@ body{background:#fff!important}
 </head>
 <body>
 <main>
-<section id="login"><h1>Abamotari</h1><p class="sub" data-t="login_sub"></p><div class="f"><label><span data-t="email"></span><input id="em" type="email" autocomplete="username"></label><label><span data-t="pass"></span><input id="pw" type="password" autocomplete="current-password"></label><button class="b main" id="lb" data-t="signin"></button><p id="le" class="d bad"></p></div></section>
+<section id="login"><h1>GIHAVU</h1><p class="sub" data-t="login_sub"></p><div class="f"><label><span data-t="email"></span><input id="em" type="email" autocomplete="username"></label><label><span data-t="pass"></span><input id="pw" type="password" autocomplete="current-password"></label><button class="b main" id="lb" data-t="signin"></button><p id="le" class="d bad"></p></div></section>
 <div id="app" hidden>
-<div class="top"><h1>Abamotari</h1><button class="b" id="gear" aria-label="Settings">⚙</button></div>
+<div class="top"><h1>GIHAVU</h1><button class="b" id="gear" aria-label="Settings">⚙</button></div>
 <p class="sub" data-t="app_sub"></p>
 <section id="set" hidden>
 <div class="sec" data-t="settings" style="margin-top:0"></div>
@@ -87,7 +88,7 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v3</p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note" id="tr2"></p><p class="note">v4</p>
 </section>
 <div class="sum" id="sum"></div>
 <details class="add"><summary data-t="add"></summary>
@@ -186,7 +187,7 @@ else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
 signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
 document.getElementById("out").onclick=function(){signOut(auth)};
-document.getElementById("tst").onclick=function(){var r=document.getElementById("tres");r.textContent="…";var done=false,tm=setTimeout(function(){if(!done)r.textContent="⚠ Nta gisubizo mu masegonda 10. Umuyoboro urabuza Firebase / No response in 10s. The network blocks Firebase."},10000);
+document.getElementById("tst").onclick=function(){var r=document.getElementById("tres");r.textContent="…";var r2=document.getElementById("tr2");r2.textContent="REST…";(function(){var u=auth.currentUser;if(!u){r2.textContent="REST: no user";return}var t2=setTimeout(function(){r2.textContent="REST ⚠ no response 10s"},10000);u.getIdToken().then(function(k){return fetch("https://firestore.googleapis.com/v1/projects/gihavu-14ad4/databases/(default)/documents/motari?pageSize=1",{headers:{Authorization:"Bearer "+k}})}).then(function(x){return x.text().then(function(b){clearTimeout(t2);r2.textContent="REST "+x.status+" "+b.slice(0,160)})}).catch(function(e){clearTimeout(t2);r2.textContent="REST ✗ "+(e&&e.message||e)})})();var done=false,tm=setTimeout(function(){if(!done)r.textContent="⚠ Nta gisubizo mu masegonda 10. Umuyoboro urabuza Firebase / No response in 10s. The network blocks Firebase."},10000);
 setDoc(doc(db,"motari","_test"),{t:Date.now()}).then(function(){done=true;clearTimeout(tm);r.textContent="✓ Bikora: byabitswe kuri seriveri / Works: saved to server.";deleteDoc(doc(db,"motari","_test"))}).catch(function(e){done=true;clearTimeout(tm);r.textContent="✗ ["+((e&&e.code)||e)+"]"})};
 function av(x){return x.photo?'<img class="av" src="'+x.photo+'" alt="">':'<span class="av">'+esc((x.n||"?").trim().charAt(0).toUpperCase())+'</span>'}
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};i.src=r.result};r.readAsDataURL(f)}
