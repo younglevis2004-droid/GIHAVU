@@ -59,6 +59,7 @@ details.add summary{font-weight:700;cursor:pointer}
 #set{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.chips .b{padding:6px 12px;font-size:13px}
+#sv{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:9px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:9;background:var(--btn);color:var(--btnink);max-width:92vw;text-align:center}#sv.bad{background:var(--bad);color:#fff}
 #rep{display:none}
 #rep h1{font-size:22px;margin:0 0 4px}#rep h2{font-size:18px;margin:0 0 4px}#rep h3{font-size:15px;margin:14px 0 4px}#rep p{margin:2px 0}
 #rep table{width:100%;border-collapse:collapse;margin:4px 0 10px}
@@ -86,6 +87,7 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label></div>
 <p class="note" data-t="dev_note"></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v3</p>
 </section>
 <div class="sum" id="sum"></div>
 <details class="add"><summary data-t="add"></summary>
@@ -106,15 +108,16 @@ body{background:#fff!important}
 <div id="list"></div>
 <p class="note"><button class="b" id="out" data-t="signout"></button></p></div>
 </main>
+<div id="sv"></div>
 <div id="rep"></div>
 <script>setTimeout(function(){if(!window.__ok){var e=document.getElementById("le");if(e)e.textContent="Page ntishoboye gufungura. Igomba gufungurwa kuri link ya GitHub Pages. / This page must be opened from the GitHub Pages link."}},3000)</script>
 <script type="module">
 window.__ok=1;
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,collection,doc,setDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{initializeFirestore,collection,doc,setDoc,deleteDoc,onSnapshot}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBJbfDI8XBzANqou4zlPeQ2M-rS-8-PTzk",authDomain:"gihavu-14ad4.firebaseapp.com",projectId:"gihavu-14ad4",appId:"1:825227843232:web:96ed1403248c91dc889bc5"};
-var app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+var app=initializeApp(firebaseConfig),auth=getAuth(app),db=initializeFirestore(app,{experimentalForceLongPolling:true});
 
 var T={
 rw:{login_sub:"Injira kugira ngo ubone amakuru.",email:"Imeli",pass:"Ijambo ry’ibanga",signin:"Injira",login_err:"Imeli cyangwa ijambo ry’ibanga si byo.",
@@ -131,6 +134,7 @@ call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho 
 empty:"Nta mumotari urongerwaho. Ongeraho uwa mbere hejuru.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
 f_months:"Igihe cy’amasezerano (amezi)",c_months:"Igihe cy’amasezerano (amezi)",c_end:"Moto izaba iye ku wa",c_left:"Hasigaye",c_done:"Igihe cyarangiye",c_none:"Shyiraho itariki yo gutangira n’amezi y’amasezerano kugira ngo igihe gibarwe.",c_prog:"{0}% by’igihe cyarangiye",left_badge:"Yavuyemo",left_q:"Yavuye mu kazi?",left_btn:"Yavuyemo",back_btn:"Agaruke mu kazi",left_conf:"Ashyirwe mu bavuyemo? Amakuru ye yose arabikwa.",left_on:"Yavuye ku wa {0}",left_reason:"Impamvu (si ngombwa)",f_left:"Abavuyemo",none_left:"Nta mumotari wavuyemo.",dup:"Hari umumotari ufite iyi plaque cyangwa telefone: {0}. Ukomeze kumwongera?",dup_left:" (yavuyemo)",
+test_btn:"Gerageza kubika (isuzuma)",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
 settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
 rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
 months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
@@ -148,6 +152,7 @@ call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this dr
 empty:"No drivers yet. Add the first one above.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
 f_months:"Contract length (months)",c_months:"Contract length (months)",c_end:"Moto becomes his on",c_left:"Remaining",c_done:"Period completed",c_none:"Set a start date and contract months to calculate the time.",c_prog:"{0}% of the time elapsed",left_badge:"Left",left_q:"Left the job?",left_btn:"Mark as left",back_btn:"Return to work",left_conf:"Move to former drivers? All data is kept.",left_on:"Left on {0}",left_reason:"Reason (optional)",f_left:"Left",none_left:"No drivers have left.",dup:"A driver with this plate or phone already exists: {0}. Add anyway?",dup_left:" (left)",
+test_btn:"Test saving",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
 settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
 rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
@@ -176,15 +181,20 @@ function sample(){return[
 {id:4,n:"Emmanuel Mugisha",p:"RF 902 D",t:"0781 000 444",doc:[iso(25),iso(-2),iso(60)],days:2,paid:false,amt:15000}]}
 var L=document.getElementById("login"),A=document.getElementById("app");
 onAuthStateChanged(auth,function(u){L.hidden=!!u;A.hidden=!u;
-if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.map(function(x){var o=x.data();o.id=x.id;return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
+if(u){unsub=onSnapshot(collection(db,"motari"),function(q){ready=true;msg="";data=q.docs.filter(function(x){return x.id.charAt(0)!="_"}).map(function(x){var o=x.data();o.id=x.id;if(!o.doc)o.doc=["","",""];return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
 else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
 signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
 document.getElementById("out").onclick=function(){signOut(auth)};
+document.getElementById("tst").onclick=function(){var r=document.getElementById("tres");r.textContent="…";var done=false,tm=setTimeout(function(){if(!done)r.textContent="⚠ Nta gisubizo mu masegonda 10. Umuyoboro urabuza Firebase / No response in 10s. The network blocks Firebase."},10000);
+setDoc(doc(db,"motari","_test"),{t:Date.now()}).then(function(){done=true;clearTimeout(tm);r.textContent="✓ Bikora: byabitswe kuri seriveri / Works: saved to server.";deleteDoc(doc(db,"motari","_test"))}).catch(function(e){done=true;clearTimeout(tm);r.textContent="✗ ["+((e&&e.code)||e)+"]"})};
 function av(x){return x.photo?'<img class="av" src="'+x.photo+'" alt="">':'<span class="av">'+esc((x.n||"?").trim().charAt(0).toUpperCase())+'</span>'}
 function shrink(f,cb){var r=new FileReader();r.onload=function(){var i=new Image();i.onload=function(){var k=Math.min(1,240/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};i.src=r.result};r.readAsDataURL(f)}
 var newPhoto="";
-function persist(x){setDoc(doc(db,"motari",x.id),x).catch(function(e){alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})}
+var svT=0,svH=0;
+function sv(m,bad,ms){var e=document.getElementById("sv");e.textContent=m;e.className=bad?"bad":"";e.style.display="block";clearTimeout(svH);if(ms)svH=setTimeout(function(){e.style.display="none"},ms)}
+function persist(x){sv(t("sv_wait"));var my=++svT,slow=setTimeout(function(){if(my==svT)sv(t("sv_slow"),true)},6000);
+setDoc(doc(db,"motari",x.id),x).then(function(){clearTimeout(slow);if(my==svT)sv(t("sv_ok"),false,2500)}).catch(function(e){clearTimeout(slow);document.getElementById("sv").style.display="none";alert(t("save_err")+" ["+((e&&e.code)||e)+"]")})}
 function seed(){sample().forEach(function(x){x.id=String(x.id);persist(x)})}
 function dn(i){return t(["n_permis","n_ins","n_insp"][i])}
 function left(d){if(!d)return 9999;var a=new Date(d+"T00:00:00"),b=new Date();b.setHours(0,0,0,0);return Math.round((a-b)/864e5)}
