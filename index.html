@@ -129,7 +129,7 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v13</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v14</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
 </section>
 <nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
 </div>
@@ -155,7 +155,7 @@ starts_in:"Azatangira mu minsi {0}",s_days:"iminsi {0}",s_months:"amezi {0}",s_y
 days_week:"Iminsi yakoze iki cyumweru",dec:"Gabanya",inc:"Ongera",weekly:"Amafaranga y’icyumweru",total_pay:"Ayose agomba kwishyura",total_hint:"Si ngombwa (ideni, kugura moto)",
 paid_week:"Yishyuye iki cyumweru",paid:"Yishyuye",notpaid:"Ntiyishyuye",
 pay_h:"Ayo yatanze",date:"Itariki",amount:"Amafaranga (RWF)",add_pay:"Ongeraho ayo yatanze",no_pay:"Nta mafaranga aranditswe.",paid_total:"Yishyuye yose",this_month:"Uku kwezi",time_work:"Igihe amaze akora",
-due:"Agomba kwishyura ({0} × {1})",over:"Yarenzeho",remain:"Asigaje",hint_rem:"Shyiraho itariki yo gutangira cyangwa “Ayose agomba kwishyura” kugira ngo ibare asigaye.",del_pay:"Usibye iri tangwa?",need_amt:"Andika amafaranga yatanze.",
+due:"Yagombye kuba yaratanze kugeza ubu ({0} × {1})",c_total:"Amasezerano yose ({0} ibyumweru × {1})",remain_c:"Asigaje ku masezerano yose",late:"Yatinze kwishyura (kugeza ubu)",over:"Yarenzeho",remain:"Asigaje",hint_rem:"Shyiraho itariki yo gutangira cyangwa “Ayose agomba kwishyura” kugira ngo ibare asigaye.",del_pay:"Usibye iri tangwa?",need_amt:"Andika amafaranga yatanze.",
 call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho uyu mumotari?",
 empty:"Nta mumotari urongerwaho. Kanda “Ongeraho” hasi kugira ngo wongereho uwa mbere.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
@@ -173,7 +173,7 @@ starts_in:"Starts in {0} days",s_days:"{0} days",s_months:"{0} months",s_years:"
 days_week:"Days worked this week",dec:"Decrease",inc:"Increase",weekly:"Weekly amount",total_pay:"Total to pay",total_hint:"Optional (debt, buying the moto)",
 paid_week:"Paid this week",paid:"Paid",notpaid:"Not paid",
 pay_h:"Payments",date:"Date",amount:"Amount (RWF)",add_pay:"Add payment",no_pay:"No payments recorded.",paid_total:"Total paid",this_month:"This month",time_work:"Time working",
-due:"Due ({0} wks × {1})",over:"Overpaid",remain:"Remaining",hint_rem:"Set a start date or “Total to pay” to calculate the remaining amount.",del_pay:"Delete this payment?",need_amt:"Enter the amount paid.",
+due:"Should have paid so far ({0} wks × {1})",c_total:"Whole contract ({0} weeks × {1})",remain_c:"Remaining on the contract",late:"Behind on payments (so far)",over:"Overpaid",remain:"Remaining",hint_rem:"Set a start date or “Total to pay” to calculate the remaining amount.",del_pay:"Delete this payment?",need_amt:"Enter the amount paid.",
 call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this driver?",
 empty:"No drivers yet. Tap “Add” below to add the first one.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
@@ -250,7 +250,7 @@ function addM(d,m){var a=new Date(d+"T00:00:00");a.setMonth(a.getMonth()+m);retu
 function cend(x){return x.start&&+x.months>0?addM(x.start,+x.months):""}
 function cprog(x){var e=cend(x);if(!e)return 0;var tot=(new Date(e)-new Date(x.start))/864e5,used=-left(x.start);return Math.max(0,Math.min(100,Math.round(used/tot*100)))}
 function contract(x){var e=cend(x);if(!e)return '<p class="sub" style="margin:8px 0 0">'+t("c_none")+'</p>';var n=left(e),p=cprog(x);return '<div class="sumbox"><div><span>'+t("c_end")+'</span><b>'+fdate(e)+'</b></div><div><span>'+t("c_left")+'</span><b>'+(n>0?durN(n):t("c_done"))+'</b></div><div class="bar"><i style="width:'+p+'%"></i></div><small>'+t("c_prog",p)+'</small></div>'}
-function fin(x){var paid=(x.pay||[]).reduce(function(s,p){return s+(+p.a||0)},0);var n=x.start?-left(x.start):0,wk=n>0?Math.floor(n/7):0,exp=wk*(+x.amt||0),tot=+x.total||0,base=tot>0?tot:exp;return{paid:paid,wk:wk,exp:exp,tot:tot,base:base,rem:base-paid}}
+function fin(x){var paid=(x.pay||[]).reduce(function(s,p){return s+(+p.a||0)},0);var n=x.start?-left(x.start):0,wk=n>0?Math.floor(n/7):0,exp=wk*(+x.amt||0),tot=+x.total||0,e=cend(x),cw=e?Math.round((new Date(e)-new Date(x.start))/864e5/7):0,ct=cw*(+x.amt||0),base=tot>0?tot:(ct>0?ct:exp);return{paid:paid,wk:wk,exp:exp,tot:tot,cw:cw,ct:ct,base:base,rem:base-paid,late:x.start?Math.max(0,exp-paid):0}}
 function paySec(x){var f=fin(x),pay=(x.pay||[]).slice().sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:0}),cm=today().slice(0,7),mt=0;
 pay.forEach(function(p){if((p.d||"").slice(0,7)==cm)mt+=+p.a||0});
 var h='<div class="sec">'+t("pay_h")+'</div><div class="f" style="grid-template-columns:1fr 1fr"><label>'+t("date")+'<input type="date" value="'+today()+'" data-pd="'+x.id+'"></label><label>'+t("amount")+'<input type="number" inputmode="numeric" value="'+x.amt+'" data-pa="'+x.id+'"></label><button class="b main" data-ap="'+x.id+'" style="grid-column:1/-1">'+t("add_pay")+'</button></div>';
@@ -259,7 +259,7 @@ pay.forEach(function(p){var k=(p.d||"").slice(0,7);if(k!=cur){cur=k;var s=0;pay.
 h+='<div class="row"><span>'+fdate(p.d)+'</span><span class="step"><b style="min-width:0">'+fmt(p.a)+' RWF</b><button class="b del" data-dp="'+x.id+'|'+p.id+'" aria-label="×">×</button></span></div>'});
 if(!pay.length)h+='<p class="sub" style="margin:8px 0 0">'+t("no_pay")+'</p>';
 h+='<div class="sumbox"><div><span>'+t("paid_total")+'</span><b>'+fmt(f.paid)+' RWF</b></div><div><span>'+t("this_month")+'</span><b>'+fmt(mt)+' RWF</b></div><div><span>'+t("time_work")+'</span><b>'+durShort(x.start)+'</b></div>';
-if(f.tot>0||x.start){h+='<div><span>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt)))+'</span><b>'+fmt(f.base)+' RWF</b></div><div'+(f.rem<0?' class="neg"':'')+'><span>'+(f.rem<0?t("over"):t("remain"))+'</span><b>'+fmt(Math.abs(f.rem))+' RWF</b></div>'}
+if(f.tot>0||x.start){h+='<div><span>'+(f.tot>0?t("total_pay"):f.ct>0?t("c_total",f.cw,fmt(x.amt)):t("due",f.wk,fmt(x.amt)))+'</span><b>'+fmt(f.base)+' RWF</b></div>'+((f.tot>0||f.ct>0)&&x.start?'<div><span>'+t("due",f.wk,fmt(x.amt))+'</span><b>'+fmt(f.exp)+' RWF</b></div>':'')+'<div'+(f.rem<0?' class="neg"':'')+'><span>'+(f.rem<0?t("over"):(f.tot>0||f.ct>0)?t("remain_c"):t("remain"))+'</span><b>'+fmt(Math.abs(f.rem))+' RWF</b></div>'+(f.late>0&&(f.tot>0||f.ct>0)?'<div class="neg"><span>'+t("late")+'</span><b>'+fmt(f.late)+' RWF</b></div>':'')}
 else h+='<div><span>'+t("remain")+'</span><b>—</b></div><small>'+t("hint_rem")+'</small>';
 return h+'</div>'}
 var repOld="";
@@ -270,7 +270,7 @@ h+='<h3>'+t("rp_perf")+'</h3><table><tr><td>'+t("days_week")+'</td><td>'+x.days+
 h+='<h3>'+t("rp_pay")+'</h3>';
 if(pay.length){h+='<table><tr><th>'+t("date")+'</th><th>'+t("rp_amt")+'</th></tr>'+pay.map(function(p){return '<tr><td>'+fdate(p.d)+'</td><td>'+fmt(p.a)+' RWF</td></tr>'}).join("")+'</table>'}else h+='<p>'+t("no_pay")+'</p>';
 h+='<table><tr><td>'+t("paid_total")+'</td><td><b>'+fmt(f.paid)+' RWF</b></td></tr>';
-if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt)))+'</td><td>'+fmt(f.base)+' RWF</td></tr><tr><td>'+(f.rem<0?t("over"):t("remain"))+'</td><td><b>'+fmt(Math.abs(f.rem))+' RWF</b></td></tr>';
+if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):f.ct>0?t("c_total",f.cw,fmt(x.amt)):t("due",f.wk,fmt(x.amt)))+'</td><td>'+fmt(f.base)+' RWF</td></tr>'+((f.tot>0||f.ct>0)&&x.start?'<tr><td>'+t("due",f.wk,fmt(x.amt))+'</td><td>'+fmt(f.exp)+' RWF</td></tr>':'')+'<tr><td>'+(f.rem<0?t("over"):(f.tot>0||f.ct>0)?t("remain_c"):t("remain"))+'</td><td><b>'+fmt(Math.abs(f.rem))+' RWF</b></td></tr>'+(f.late>0&&(f.tot>0||f.ct>0)?'<tr><td>'+t("late")+'</td><td><b>'+fmt(f.late)+' RWF</b></td></tr>':'');
 h+='</table>';
 var R=document.getElementById("rep");R.innerHTML='<div class="rtool"><button class="b main" data-rprint="1">🖨 '+t("rp_print")+'</button><button class="b" data-rclose="1">✕ '+t("rp_close")+'</button></div>'+h;R.classList.add("show");R.scrollTop=0;repOld=document.title;document.title=t("rp_title")+" - "+x.n}
 function render(){if(tab=="talk")renderTalk();
