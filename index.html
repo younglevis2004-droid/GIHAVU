@@ -15,7 +15,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
-main{max-width:560px;margin:0 auto;padding:20px 16px 110px}
+main{max-width:560px;margin:0 auto;padding:20px 16px 40px}
 h1{font-size:28px;margin:4px 0 2px;letter-spacing:-.5px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .sub{color:var(--mut);margin:0 0 16px;font-size:14px}
@@ -60,11 +60,12 @@ details.add summary{font-weight:700;cursor:pointer}
 #set{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:16px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .cardf{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 14px 12px}.cardf a.b{text-decoration:none;display:inline-block;color:var(--ink)}
-#nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:8}
-#nav button{flex:1;background:none;border:0;border-top:3px solid transparent;color:var(--mut);font:inherit;font-size:11px;font-weight:700;padding:7px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer}
-#nav button.on{color:var(--ink);border-top-color:var(--ok)}#nav .ic{font-size:21px;line-height:1.1}
+#nav{position:fixed;left:0;top:0;bottom:0;width:70px;display:flex;flex-direction:column;background:var(--card);border-right:1px solid var(--line);padding-top:calc(14px + env(safe-area-inset-top,0px));padding-bottom:env(safe-area-inset-bottom,0px);z-index:8}
+#nav button{background:none;border:0;border-left:4px solid transparent;color:var(--mut);font:inherit;font-size:10px;font-weight:700;padding:12px 1px 10px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;text-align:center;word-break:break-word}
+#nav button.on{color:var(--ink);border-left-color:var(--ok);background:var(--okbg)}#nav .ic{font-size:22px;line-height:1.1}
+#app{padding-left:70px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}.chips .b{padding:6px 12px;font-size:13px}
-#sv{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(86px + env(safe-area-inset-bottom,0px));padding:9px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:9;background:var(--btn);color:var(--btnink);max-width:92vw;text-align:center}#sv.bad{background:var(--bad);color:#fff}
+#sv{position:fixed;left:calc(50% + 35px);transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));padding:9px 16px;border-radius:99px;font-size:13px;font-weight:700;display:none;z-index:9;background:var(--btn);color:var(--btnink);max-width:92vw;text-align:center}#sv.bad{background:var(--bad);color:#fff}
 #rep{display:none}
 #rep h1{font-size:22px;margin:0 0 4px}#rep h2{font-size:18px;margin:0 0 4px}#rep h3{font-size:15px;margin:14px 0 4px}#rep p{margin:2px 0}
 #rep table{width:100%;border-collapse:collapse;margin:4px 0 10px}
@@ -94,6 +95,11 @@ body{background:#fff!important}
 <div class="chips"><button class="b" data-f="unpaid" id="fu"></button><button class="b" data-f="paidw" id="fp"></button></div>
 <div id="list2"></div>
 </section>
+<section id="v-talk" hidden>
+<div class="sec" data-t="talk_title" style="margin-top:0"></div>
+<div class="f" style="margin-bottom:12px"><input id="q" type="search" data-tp="talk_search" autocomplete="off"></div>
+<div id="list3"></div>
+</section>
 <section id="v-add" hidden>
 <div class="sec" data-t="add" style="margin-top:0"></div>
 <div class="f">
@@ -118,9 +124,9 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v7</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v9</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
 </section>
-<nav id="nav"><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button></nav>
+<nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
 </div>
 </main>
 <div id="sv"></div>
@@ -149,7 +155,7 @@ call:"Muhamagare",report_btn:"Raporo (PDF)",remove:"Mukure",rm_confirm:"Ukureho 
 empty:"Nta mumotari urongerwaho. Kanda “Ongeraho” hasi kugira ngo wongereho uwa mbere.",loading:"Birimo gufungura…",sample:"Shyiraho abo kugerageza",read_err:"Amakuru ntashoboye gusomwa. Reba interineti.",save_err:"Ntibyabitswe. Gerageza nanone.",need_name:"Andika amazina y’umumotari.",
 flag_badge:"Ntakora neza",flag_set:"Shyiraho icyimenyetso",flag_unset:"Kuraho icyimenyetso",flag_row:"Icyimenyetso: ntakora neza",flag_note:"Impamvu (si ngombwa)",f_all:"Bose",f_flag:"Abafite icyimenyetso",none_flag:"Nta mumotari ufite icyimenyetso.",
 f_months:"Igihe cy’amasezerano (amezi)",c_months:"Igihe cy’amasezerano (amezi)",c_end:"Moto izaba iye ku wa",c_left:"Hasigaye",c_done:"Igihe cyarangiye",c_none:"Shyiraho itariki yo gutangira n’amezi y’amasezerano kugira ngo igihe gibarwe.",c_prog:"{0}% by’igihe cyarangiye",left_badge:"Yavuyemo",left_q:"Yavuye mu kazi?",left_btn:"Yavuyemo",back_btn:"Agaruke mu kazi",left_conf:"Ashyirwe mu bavuyemo? Amakuru ye yose arabikwa.",left_on:"Yavuye ku wa {0}",left_reason:"Impamvu (si ngombwa)",f_left:"Abavuyemo",none_left:"Nta mumotari wavuyemo.",dup:"Hari umumotari ufite iyi plaque cyangwa telefone: {0}. Ukomeze kumwongera?",dup_left:" (yavuyemo)",
-test_btn:"Gerageza kubika (isuzuma)",tab_home:"Abamotari",tab_pay:"Kwishyura",tab_add:"Ongeraho",tab_set:"Igenamiterere",wk_range:"Icyumweru",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
+test_btn:"Gerageza kubika (isuzuma)",talk:"Vugana",remind:"Kwibutsa",t_call:"Hamagara",tab_home:"Abamotari",tab_talk:"Vugana",talk_title:"Vugana n’umumotari",talk_search:"Shakisha izina, plaque cyangwa telefone",no_phone:"Nta telefone yanditse",none_found:"Nta mumotari ubonetse.",tab_pay:"Kwishyura",tab_add:"Ongeraho",tab_set:"Seting",wk_range:"Icyumweru",wk_amt:"Asigaje kwishyurwa",f_unpaid:"Basigaye",f_paidw:"Bishyuye",mark_paid:"Yishyuye",wa_btn:"WhatsApp",msg_lbl:"Ubutumwa bwo kwibutsa kwishyura ({name} = izina, {amt} = amafaranga)",msg_def:"Muraho {name}, mwibutsijwe kwishyura amafaranga y’iki cyumweru: {amt} RWF. Murakoze.",none_unpaid:"Nta musigaye. Bose bishyuye! 🎉",none_paidw:"Nta wishyuye iki cyumweru.",sv_wait:"Birimo kubikwa…",sv_ok:"✓ Byabitswe kuri seriveri",sv_slow:"⚠ Ntibirabikwa kuri seriveri. Reba interineti, utarafunga urubuga.",
 settings:"Igenamiterere",lang:"Ururimi",theme:"Uburyo bw’ibara",th_auto:"Bisanzwe",th_light:"Bwerurutse",th_dark:"Bwijimye",warn_days:"Iminsi yo kuburira mbere y’uko ibyangombwa birangira",def_amt:"Amafaranga y’icyumweru asanzwe (ku mumotari mushya)",dev_note:"Ibi bibikwa kuri iyi telefone gusa.",
 rp_title:"Raporo y’umumotari",rp_date:"Itariki",rp_plate:"Plaque",rp_phone:"Telefone",rp_docs:"Ibyangombwa",rp_doc:"Icyangombwa",rp_exp:"Irangira",rp_status:"Uko bimeze",rp_perf:"Imikorere",yes:"Yego",no:"Oya",rp_pay:"Ayo yatanze",rp_amt:"Amafaranga",rp_flag:"Icyimenyetso",
 months:["Mutarama","Gashyantare","Werurwe","Mata","Gicurasi","Kamena","Nyakanga","Kanama","Nzeri","Ukwakira","Ugushyingo","Ukuboza"]},
@@ -167,7 +173,7 @@ call:"Call",report_btn:"Report (PDF)",remove:"Remove",rm_confirm:"Remove this dr
 empty:"No drivers yet. Tap “Add” below to add the first one.",loading:"Loading…",sample:"Add sample drivers",read_err:"Could not load data. Check your internet.",save_err:"Not saved. Try again.",need_name:"Enter the driver’s name.",
 flag_badge:"Not performing well",flag_set:"Add flag",flag_unset:"Remove flag",flag_row:"Flag: not performing well",flag_note:"Reason (optional)",f_all:"All",f_flag:"Flagged",none_flag:"No flagged drivers.",
 f_months:"Contract length (months)",c_months:"Contract length (months)",c_end:"Moto becomes his on",c_left:"Remaining",c_done:"Period completed",c_none:"Set a start date and contract months to calculate the time.",c_prog:"{0}% of the time elapsed",left_badge:"Left",left_q:"Left the job?",left_btn:"Mark as left",back_btn:"Return to work",left_conf:"Move to former drivers? All data is kept.",left_on:"Left on {0}",left_reason:"Reason (optional)",f_left:"Left",none_left:"No drivers have left.",dup:"A driver with this plate or phone already exists: {0}. Add anyway?",dup_left:" (left)",
-test_btn:"Test saving",tab_home:"Drivers",tab_pay:"Payments",tab_add:"Add",tab_set:"Settings",wk_range:"Week",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
+test_btn:"Test saving",talk:"Talk",remind:"Remind",t_call:"Call",tab_home:"Drivers",tab_talk:"Talk",talk_title:"Talk to a driver",talk_search:"Search name, plate or phone",no_phone:"No phone saved",none_found:"No driver found.",tab_pay:"Payments",tab_add:"Add",tab_set:"Settings",wk_range:"Week",wk_amt:"Still to be paid",f_unpaid:"Not paid",f_paidw:"Paid",mark_paid:"Paid",wa_btn:"WhatsApp",msg_lbl:"Payment reminder message ({name} = name, {amt} = amount)",msg_def:"Hello {name}, a reminder to pay this week’s amount: {amt} RWF. Thank you.",none_unpaid:"Nobody left to pay. Everyone paid! 🎉",none_paidw:"Nobody has paid this week.",sv_wait:"Saving…",sv_ok:"✓ Saved to server",sv_slow:"⚠ Not saved to the server yet. Check your internet and keep this page open.",
 settings:"Settings",lang:"Language",theme:"Theme",th_auto:"Auto",th_light:"Light",th_dark:"Dark",warn_days:"Warn this many days before documents expire",def_amt:"Default weekly amount (for new drivers)",dev_note:"These are saved on this device only.",
 rp_title:"Driver report",rp_date:"Date",rp_plate:"Plate",rp_phone:"Phone",rp_docs:"Documents",rp_doc:"Document",rp_exp:"Expires",rp_status:"Status",rp_perf:"Performance",yes:"Yes",no:"No",rp_pay:"Payments",rp_amt:"Amount",rp_flag:"Flag",
 months:["January","February","March","April","May","June","July","August","September","October","November","December"]}
@@ -187,9 +193,9 @@ document.querySelectorAll("[data-lang]").forEach(function(b){b.classList.toggle(
 document.querySelectorAll("[data-th]").forEach(function(b){b.classList.toggle("main",b.dataset.th==theme)});
 document.getElementById("s_warn").value=WARN;document.getElementById("s_amt").value=DEF;document.getElementById("e4").value=DEF;document.getElementById("s_msg").value=LS.get("mt_msg","")||t("msg_def")}
 
-var tab="home";
+var tab="home",talk=null;
 function showTab(k){tab=k;if(k=="home")filter="all";if(k=="pay")filter="unpaid";
-var ids={home:"v-home",pay:"v-pay",add:"v-add",set:"set"};for(var n in ids)document.getElementById(ids[n]).hidden=(n!=k);
+var ids={home:"v-home",pay:"v-pay",add:"v-add",talk:"v-talk",set:"set"};for(var n in ids)document.getElementById(ids[n]).hidden=(n!=k);
 document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.tab==k)});window.scrollTo(0,0);render()}
 var open=null,data=[],ready=false,msg="",unsub=null;
 function iso(off){var d=new Date();d.setDate(d.getDate()+off);return d.toISOString().slice(0,10)}
@@ -261,7 +267,7 @@ h+='<table><tr><td>'+t("paid_total")+'</td><td><b>'+fmt(f.paid)+' RWF</b></td></
 if(f.tot>0||x.start)h+='<tr><td>'+(f.tot>0?t("total_pay"):t("due",f.wk,fmt(x.amt)))+'</td><td>'+fmt(f.base)+' RWF</td></tr><tr><td>'+(f.rem<0?t("over"):t("remain"))+'</td><td><b>'+fmt(Math.abs(f.rem))+' RWF</b></td></tr>';
 h+='</table>';
 document.getElementById("rep").innerHTML=h;var old=document.title;document.title=t("rp_title")+" - "+x.n;window.onafterprint=function(){document.title=old};setTimeout(function(){window.print()},150)}
-function render(){
+function render(){if(tab=="talk")renderTalk();
 var act=data.filter(function(x){return !x.left}),gone=data.filter(function(x){return x.left});var c={bad:0,warn:0,ok:0};act.forEach(function(x){c[st(x)]++});
 document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
 var nf=act.filter(function(x){return x.flag}).length;
@@ -277,7 +283,7 @@ var shown=(filter=="left"?gone:filter=="unpaid"?up:filter=="paidw"?pw:filter=="f
 var LST=document.getElementById(tab=="pay"?"list2":"list");document.getElementById(tab=="pay"?"list":"list2").innerHTML="";LST.innerHTML=shown.map(function(x){
 var s=st(x),m=Math.min.apply(null,x.doc.map(left));
 var h='<div class="card '+(x.left?"":s)+'"><button class="head" data-o="'+x.id+'" aria-expanded="'+(open===x.id)+'">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span>'+(x.flag?'<br><span class="flag">⚠ '+t("flag_badge")+'</span>':'')+'</span>'+(x.left?'<span class="tag" style="background:var(--line);color:var(--mut)">'+t("left_badge")+'</span>':'<span class="tag '+s+'">'+(s=="bad"?t("tag_bad"):s=="warn"?t("tag_days",m):t("tag_ok"))+'</span>')+'</button>';
-if(!x.left){var pwx=paidWk(x),wl=waLink(x);h+='<div class="cardf"><span class="tag '+(pwx?"ok":"bad")+'">'+(pwx?t("paid"):t("notpaid"))+'</span>'+(wl?'<a class="b" href="'+wl+'" target="_blank" rel="noopener">💬 '+t("wa_btn")+'</a>':'')+(pwx?'':'<button class="b" data-p="'+x.id+'">✓ '+t("mark_paid")+'</button>')+'</div>'}
+if(!x.left){var pwx=paidWk(x),wl=waLink(x);h+='<div class="cardf"><span class="tag '+(pwx?"ok":"bad")+'">'+(pwx?t("paid"):t("notpaid"))+'</span>'+(wl?'<button class="b" data-tk="'+x.id+'">🗣 '+t("talk")+'</button><a class="b" href="'+wl+'" target="_blank" rel="noopener">💬 '+t("remind")+'</a>':'')+(pwx?'':'<button class="b" data-p="'+x.id+'">✓ '+t("mark_paid")+'</button>')+'</div>'+(wl&&talk===x.id?'<div class="cardf"><a class="b" href="tel:+'+waNum(x.t)+'">📞 '+t("t_call")+'</a><a class="b" href="sms:+'+waNum(x.t)+'">✉️ SMS</a><a class="b" href="https://wa.me/'+waNum(x.t)+'" target="_blank" rel="noopener">💬 WhatsApp</a></div>':'')}
 if(open===x.id){h+='<div class="body"><div class="row"><span>'+t("photo")+'</span><label class="pb">'+t("change_photo")+'<input type="file" accept="image/*" data-ph="'+x.id+'" hidden></label></div>';
 h+='<div class="row"><span>'+t("started")+'<small>'+dur(x.start)+'</small></span><input type="date" value="'+(x.start||"")+'" data-st="'+x.id+'" aria-label="'+t("started")+'"></div>';
 h+='<div class="row"><span>'+t("c_months")+'</span><input type="number" inputmode="numeric" value="'+(x.months||"")+'" data-mo="'+x.id+'" style="width:120px"></div>'+contract(x);
@@ -293,11 +299,17 @@ if(x.flag)h+='<div class="row"><input data-nt="'+x.id+'" value="'+esc(x.note||""
 h+=paySec(x);
 h+='<div class="row" style="flex-wrap:wrap"><a href="tel:'+esc(x.t.replace(/\s/g,""))+'" class="b" style="text-decoration:none;color:inherit;border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-weight:700;font-size:14px">'+t("call")+'</a><button class="b" data-rp="'+x.id+'">'+t("report_btn")+'</button><button class="b del" data-x="'+x.id+'">'+t("remove")+'</button></div></div>'}
 return h+'</div>'}).join("")||'<p class="sub">'+(msg||(ready?(filter=="left"?t("none_left"):filter=="unpaid"&&act.length?t("none_unpaid"):filter=="paidw"&&act.length?t("none_paidw"):filter=="flag"&&data.length?t("none_flag"):t("empty")):t("loading")))+'</p>'+(ready&&!data.length?'<button class="b" data-s="1">'+t("sample")+'</button>':'')}
+function renderTalk(){var q=(document.getElementById("q").value||"").trim().toLowerCase(),qd=q.replace(/\s/g,"");
+var rows=data.filter(function(x){return !x.left}).filter(function(x){return !q||(x.n||"").toLowerCase().indexOf(q)>=0||(x.p||"").toLowerCase().indexOf(q)>=0||(x.t||"").replace(/\s/g,"").indexOf(qd)>=0}).sort(function(a,b){return (a.n||"").localeCompare(b.n||"")});
+document.getElementById("list3").innerHTML=rows.map(function(x){var num=waNum(x.t),tel=String(x.t||"").replace(/[^\d+]/g,"");
+return '<div class="card"><div class="head" style="cursor:default">'+av(x)+'<span class="grow"><span class="nm">'+esc(x.n)+'</span><br><span class="pl">'+esc(x.p)+' · '+esc(x.t)+'</span></span></div><div class="cardf">'+(num?'<a class="b" href="tel:'+tel+'">📞 '+t("call")+'</a><a class="b" href="https://wa.me/'+num+'" target="_blank" rel="noopener">💬 '+t("wa_btn")+'</a>':'<span class="pl">'+t("no_phone")+'</span>')+'</div></div>'}).join("")||'<p class="sub">'+(ready?t("none_found"):t("loading"))+'</p>'}
+document.addEventListener("input",function(e){if(e.target.id=="q")renderTalk()});
 function find(id){return data.filter(function(x){return x.id==id})[0]}
 document.addEventListener("click",function(e){
-var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],[data-tab],#gear,#addb");if(!t0)return;
+var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],[data-dp],[data-rp],[data-fl],[data-lv],[data-f],[data-lang],[data-th],[data-tab],[data-tk],#gear,#addb");if(!t0)return;
 var d0=t0.dataset;
 if(d0.tab){showTab(d0.tab);return}
+else if(d0.tk){talk=(talk===d0.tk?null:d0.tk)}
 else if(d0.lang){lang=d0.lang;LS.set("mt_lang",lang);applyStatic()}
 else if(d0.th){theme=d0.th;LS.set("mt_theme",theme);applyTheme();applyStatic()}
 else if(d0.f){filter=d0.f}
