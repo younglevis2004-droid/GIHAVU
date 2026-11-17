@@ -182,7 +182,7 @@ body{background:#fff!important}
 <div class="seg"><button class="b" data-th="auto" data-t="th_auto"></button><button class="b" data-th="light" data-t="th_light"></button><button class="b" data-th="dark" data-t="th_dark"></button></div>
 <div class="f"><label><span data-t="warn_days"></span><input id="s_warn" type="number" inputmode="numeric" min="0" max="365"></label><label><span data-t="def_amt"></span><input id="s_amt" type="number" inputmode="numeric"></label><label><span data-t="msg_lbl"></span><textarea id="s_msg" rows="4"></textarea></label></div>
 <p class="note" data-t="dev_note"></p>
-<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v51</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
+<button class="b" id="tst" data-t="test_btn"></button><p class="note" id="tres"></p><p class="note">v52</p><p class="note"><button class="b" id="out" data-t="signout"></button></p>
 </section>
 <nav id="nav"><button data-tab="set"><span class="ic">⚙️</span><span data-t="tab_set"></span></button><button data-tab="home" class="on"><span class="ic">🏍</span><span data-t="tab_home"></span></button><button data-tab="pay"><span class="ic">💰</span><span data-t="tab_pay"></span></button><button data-tab="tot"><span class="ic">📊</span><span data-t="tab_tot"></span></button><button data-tab="talk"><span class="ic">📞</span><span data-t="tab_talk"></span></button><button data-tab="dos"><span class="ic">📁</span><span data-t="tab_dos"></span></button><button data-tab="log"><span class="ic">🕘</span><span data-t="tab_log"></span></button><button data-tab="add"><span class="ic">➕</span><span data-t="tab_add"></span></button></nav>
 </div>
@@ -403,11 +403,10 @@ var pwW=0;function pwDue(x,wk0){var a=+x.amt||0;if(!x.start||!a)return wk0*a;var
 while(m<=td){var sun=pwAdd(m,6);if(sun>td)break;var days=i==0?7-((new Date(x.start+"T00:00:00").getDay()+6)%7):7;sum+=Math.round(a*days/7);w++;m=pwAdd(m,7);i++}pwW=w;
 var cw=Math.round((+x.months||0)*4);if(cw>0)sum=Math.min(sum,cw*a);return sum}
 function pwAdd(d,n){var a=new Date(d+"T00:00:00");a.setDate(a.getDate()+n);return a.getFullYear()+"-"+pad2(a.getMonth()+1)+"-"+pad2(a.getDate())}
-function pwPlan(x){var a=+x.amt||0,S=(x.pay||[]).reduce(function(q,p){return q+(+p.a||0)},0),td=today();if(!x.start||!a)return null;
-var rows=[],m=mon(x.start),i=0,rem=S,due=0;
-while(m<=td){var sun=pwAdd(m,6),days=i==0?7-((new Date(x.start+"T00:00:00").getDay()+6)%7):7,dv=Math.round(a*days/7),done=sun<=td,amt=Math.min(dv,rem);rem-=amt;if(done)due+=dv;rows.push({d:done?sun:td,days:days,due:dv,amt:amt,done:done});m=pwAdd(m,7);i++}
-if(rem>0)rows.push({d:td,days:0,due:0,amt:rem,adv:1,done:true});
-return{rows:rows,S:S,due:due}}
+function pwPlan(x){var a=+x.amt||0,td=today();if(!x.start||!a)return null;
+var rows=[],m=mon(x.start),i=0,due=0;
+while(m<=td){var sun=pwAdd(m,6);if(sun>td)break;var days=i==0?7-((new Date(x.start+"T00:00:00").getDay()+6)%7):7,dv=Math.round(a*days/7);due+=dv;rows.push({d:sun,days:days,due:dv,amt:dv,done:true});m=pwAdd(m,7);i++}
+return{rows:rows,S:due,due:due}}
 function pwBox(x){if(pwO!==x.id)return"";var P=pwPlan(x);if(!P)return'<div class="pwb"><p class="sub">'+t("pw_need")+'</p><button class="b" data-pwx="1">'+t("pw_no")+'</button></div>';
 var h='<div class="pwb"><div class="pwh">📅 '+t("pw_title")+'</div><div class="pwt">'+P.rows.map(function(r){var st=r.adv?"➕":!r.amt?"—":r.amt>=r.due?"✅":"🟡";
 return'<div class="pwr"><span>'+fdate(r.d)+'</span><span>'+(r.days&&r.days<7?'<small>'+r.days+'/7</small>':'')+'</span><b>'+fmt(r.amt)+'</b><span>'+st+'</span></div>'}).join("")+'</div>'+
