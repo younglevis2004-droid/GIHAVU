@@ -274,6 +274,8 @@ var viO=null;
 function viPanel(x,uw){if(!(viO===x.id&&uw&&uw.length))return"";var am={};pwWeeks(x).forEach(function(w){am[w.d]=w.due});var tot=0;
 var r=uw.slice().reverse().map(function(d){tot+=am[d]||0;return'<div class="row un"><span>❌ '+fdate(d)+'</span><span class="step"><b style="min-width:0">'+fmt(am[d]||0)+' RWF</b><button class="b del" data-pwt="'+x.id+'|'+d+'" aria-label="↩">↩</button></span></div>'}).join("");
 return'<div class="body" style="padding-top:2px">'+r+'<div class="sumbox"><div><span>'+t("vi_tot")+'</span><b>'+fmt(tot)+' RWF</b></div></div></div>'}
+function payOk(x){return pwAuto(x)?!pwUnp(x).length:paidWk(x)}
+function unpAmt(x){if(!pwAuto(x))return +x.amt||0;var am={},q=0;pwWeeks(x).forEach(function(w){am[w.d]=w.due});pwUnp(x).forEach(function(d){q+=am[d]||0});return q}
 function pwAuto(x){return !!(x.auto&&x.start&&+x.amt)}
 function pwUnp(x){var un=x.unp||[];return pwWeeks(x).filter(function(w){return un.indexOf(w.d)>=0}).map(function(w){return w.d})}
 function paidWk(x){if(pwAuto(x))return true;var k=mon();return x.paidWk==k||pays(x).some(function(p){return p.d&&mon(p.d)==k})}
@@ -491,9 +493,9 @@ if(tab=="dos")renderDos();if(tab=="log"){renderLog();renderTrash()}if(tab=="talk
 var act=data.filter(function(x){return !x.left}),gone=data.filter(function(x){return x.left});var c={bad:0,warn:0,ok:0};act.forEach(function(x){c[st(x)]++});
 document.getElementById("sum").innerHTML='<div class="s-bad"><b>'+c.bad+'</b><span>'+t("sum_bad")+'</span></div><div class="s-warn"><b>'+c.warn+'</b><span>'+t("sum_warn")+'</span></div><div class="s-ok"><b>'+c.ok+'</b><span>'+t("sum_ok")+'</span></div>';
 var nf=act.filter(function(x){return x.flag}).length;
-var up=act.filter(function(x){return !paidWk(x)}),pw=act.filter(paidWk);
+var up=act.filter(function(x){return !payOk(x)}),pw=act.filter(payOk);
 var wm=mon(),we=new Date(wm+"T00:00:00");we.setDate(we.getDate()+6);var wend=we.getFullYear()+"-"+pad2(we.getMonth()+1)+"-"+pad2(we.getDate());
-document.getElementById("wk").innerHTML='<div><span>'+t("wk_range")+'</span><b>'+fdate(wm)+' – '+fdate(wend)+'</b></div><div><span>✓ '+t("f_paidw")+'</span><b>'+pw.length+'</b></div><div><span>✗ '+t("f_unpaid")+'</span><b>'+up.length+'</b></div><div><span>'+t("wk_amt")+'</span><b>'+fmtc(up.reduce(function(s,x){return s+(+x.amt||0)},0))+' RWF</b></div>';
+document.getElementById("wk").innerHTML='<div><span>'+t("wk_range")+'</span><b>'+fdate(wm)+' – '+fdate(wend)+'</b></div><div><span>✓ '+t("f_paidw")+'</span><b>'+pw.length+'</b></div><div><span>✗ '+t("f_unpaid")+'</span><b>'+up.length+'</b></div><div><span>'+t("wk_amt")+'</span><b>'+fmtc(up.reduce(function(s,x){return s+unpAmt(x)},0))+' RWF</b></div>';
 var fu=document.getElementById("fu"),fp=document.getElementById("fp");fu.textContent=t("f_unpaid")+" ("+up.length+")";fp.textContent=t("f_paidw")+" ("+pw.length+")";fu.classList.toggle("main",filter=="unpaid");fp.classList.toggle("main",filter=="paidw");
 var fa=document.getElementById("fa"),ff=document.getElementById("ff");
 var fl=document.getElementById("fl");fl.textContent=t("f_left")+" ("+gone.length+")";fl.classList.toggle("main",filter=="left");fa.textContent=t("f_all")+" ("+act.length+")";ff.textContent=t("f_flag")+" ("+nf+")";
