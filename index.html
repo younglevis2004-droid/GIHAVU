@@ -295,7 +295,7 @@ function waNum(s){var d=String(s||"").replace(/\D/g,"");if(d.length<9)return"";i
 function waLink(x){var n=waNum(x.t);if(!n)return"";var tpl=LS.get("mt_msg","")||t("msg_def");var m=tpl.split("{name}").join(x.n).split("{amt}").join(fmtc(x.amt));return"https://wa.me/"+n+"?text="+encodeURIComponent(m)}
 var L=document.getElementById("login"),A=document.getElementById("app");
 onAuthStateChanged(auth,function(u){L.hidden=!!u;A.hidden=!u;
-if(u){unsub=onSnapshot(query(collection(db,"motari"),where(documentId(),"<","_")),function(q){ready=true;msg="";try{if(!q.metadata.fromCache)rcAdd("mot",q.docChanges().length)}catch(e){}data=q.docs.filter(function(x){return x.id.charAt(0)!="_"}).map(function(x){var o=x.data();o.id=x.id;if(!o.doc)o.doc=["","",""];prevJ[o.id]=JSON.stringify(o);return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
+if(u){if(unsub){unsub();unsub=null}unsub=onSnapshot(query(collection(db,"motari"),where(documentId(),"<","_")),function(q){ready=true;msg="";try{if(!q.metadata.fromCache)rcAdd("mot",q.docChanges().length)}catch(e){}data=q.docs.filter(function(x){return x.id.charAt(0)!="_"}).map(function(x){var o=x.data();o.id=x.id;if(!o.doc)o.doc=["","",""];prevJ[o.id]=JSON.stringify(o);return o});render()},function(e){msg=t("read_err")+" ["+((e&&e.code)||e)+"]";render()})}
 else{if(unsub)unsub();data=[];ready=false}});
 document.getElementById("lb").onclick=function(){var e=document.getElementById("le");
 signInWithEmailAndPassword(auth,document.getElementById("em").value.trim(),document.getElementById("pw").value).catch(function(){e.textContent=t("login_err")})};
@@ -356,7 +356,7 @@ h+='</table>';
 var R=document.getElementById("rep");R.innerHTML='<div class="rtool"><button class="b main" data-rprint="1">🖨 '+t("rp_print")+'</button><button class="b" data-rclose="1">✕ '+t("rp_close")+'</button></div>'+h;R.classList.add("show");R.scrollTop=0;repOld=document.title;document.title=t("rp_title")+" - "+x.n}
 
 var logD=[],logF=1,prevJ={};
-function lgAdd(arr,x){logT=0;var u=(auth.currentUser&&auth.currentUser.email)||"?",b=Date.now();arr.forEach(function(e,i){var o={t:b+i,u:u,k:e.k,v:String(e.v==null?"":e.v),id:x.id||"",n:x.n||""};setDoc(doc(db,"motari","_l"+o.t+"_"+Math.random().toString(36).slice(2,6)),o).catch(function(){})})}
+function lgAdd(arr,x){logT=0;trashT=0;var u=(auth.currentUser&&auth.currentUser.email)||"?",b=Date.now();arr.forEach(function(e,i){var o={t:b+i,u:u,k:e.k,v:String(e.v==null?"":e.v),id:x.id||"",n:x.n||""};setDoc(doc(db,"motari","_l"+o.t+"_"+Math.random().toString(36).slice(2,6)),o).catch(function(){})})}
 function lgDiff(a,b){var r=[];function ch(k){return JSON.stringify(a[k])!==JSON.stringify(b[k])}
 var ia=[];[["n","Amazina"],["p","Plaque"],["t","Tel"]].forEach(function(q){if(ch(q[0]))ia.push(q[1]+": "+(a[q[0]]||"–")+" → "+(b[q[0]]||"–"))});if(ia.length)r.push({k:"info",v:ia.join("; ")});
 if(ch("amt"))r.push({k:"amt",v:fmtc(a.amt)+" → "+fmtc(b.amt)});
@@ -378,8 +378,8 @@ if(["ap","ad","as","ac","av"].some(function(k){return (a[k]||"")!==(b[k]||"")}))
 return r}
 var logT=0;function loadLog(force){if(!force&&logT&&Date.now()-logT<3e5){if(tab=="log")renderLog();return}logT=Date.now();loadTrash();rk="log";getDocs(query(collection(db,"motari"),where(documentId(),">=","_l"),where(documentId(),"<","_m"),orderBy(documentId(),"desc"),limit(25))).then(function(q){logD=q.docs.map(function(d){var o=d.data();o._id=d.id;return o}).sort(function(a,b){return b.t-a.t});if(tab=="log")renderLog()}).catch(function(e){sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000)})}
 function fts(ms){var d=new Date(ms);return fdate(d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()))+" "+pad2(d.getHours())+":"+pad2(d.getMinutes())}
-var trD=[];
-function loadTrash(){rk="trash";getDocs(query(collection(db,"motari"),where(documentId(),">=","_x"),where(documentId(),"<","_y"),orderBy(documentId(),"desc"),limit(40))).then(function(q){trD=q.docs.map(function(d){var o=d.data();o._id=d.id;return o}).sort(function(a,b){return b.at-a.at});if(tab=="log")renderTrash()}).catch(function(){})}
+var trD=[],trashT=0,trashLoading=false;
+function loadTrash(force){if(trashLoading)return;if(!force&&trashT&&Date.now()-trashT<300000){if(tab=="log")renderTrash();return}trashLoading=true;rk="trash";getDocs(query(collection(db,"motari"),where(documentId(),">=","_x"),where(documentId(),"<","_y"),orderBy(documentId(),"desc"),limit(40))).then(function(q){trD=q.docs.map(function(d){var o=d.data();o._id=d.id;return o}).sort(function(a,b){return b.at-a.at});trashT=Date.now();if(tab=="log")renderTrash()}).catch(function(){}).then(function(){trashLoading=false})}
 function renderTrash(){var now=Date.now();document.getElementById("lgt").innerHTML=trD.map(function(o){var x=o.x||{},ok=now-o.at>=7*864e5;return '<div class="lgi" style="border-left:6px solid '+lgCol(o.at)+'"><div class="lgt">'+fts(o.at)+' · '+t("tr_by")+' '+esc(String(o.by||"").split("@")[0])+'</div><div><b>'+esc(x.n||"")+'</b> · '+esc(x.p||"")+'</div><div class="cardf" style="margin-top:6px"><button class="b main" data-tr="'+o._id+'">'+t("tr_restore")+'</button>'+(ok?'<button class="b" data-tp="'+o._id+'" style="background:#2e9d5b;color:#fff;border-color:transparent">'+t("tr_perm")+'</button>':'<button class="b" disabled style="opacity:.6">'+t("tr_lock")+'</button>')+'</div></div>'}).join("")||'<p class="sub">'+t("tr_none")+'</p>'}
 
 function lgCol(ms){var d=(Date.now()-ms)/864e5;return d>=7?"#2e9d5b":d>=5?"#e0b000":d>=3?"#f0883e":"#d9534f"}
@@ -394,7 +394,7 @@ var RWE={"Umujyi wa Kigali":"Kigali City","Amajyepfo":"Southern","Iburengerazuba
 function adrLine(x){return [x.av,x.ac,x.as,x.ad,x.ap].filter(Boolean).join(", ")}
 var xmsg={},dosC={},dosO=null,MK=["mo","pl","ins","cg","au"],XK=["id","pm"],DK=["mo","id","pm","pl","ins","cg","au"];
 function dref(id,k){return doc(db,"motari","_d"+id+(XK.indexOf(k)>=0?"_"+k:""))}
-function loadDos(id){if(dosC[id])return;dosC[id]="load";Promise.all([getDoc(dref(id,"mo"))].concat(XK.map(function(k){return getDoc(dref(id,k))}))).then(function(rs){var o={};rs.forEach(function(q){if(q.exists()){var d=q.data();for(var k in d)o[k]=d[k]}});dosC[id]=o;render()}).catch(function(e){dosC[id]={};sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000);render()})}
+function loadDos(id){if(dosC[id])return;dosC[id]="load";Promise.all([getDoc(dref(id,"mo"))].concat(XK.map(function(k){return getDoc(dref(id,k))}))).then(function(rs){var o={};rs.forEach(function(q){if(q.exists()){var d=q.data();for(var k in d)o[k]=d[k]}});dosC[id]=o;render()}).catch(function(e){delete dosC[id];sv(t("dos_err")+" ["+((e&&e.code)||e)+"]",true,5000);render()})}
 
 var homeMode=LS.get("mt_hm","mon")=="perf"?"perf":"mon";
 function applyHM(){document.getElementById("mon").hidden=homeMode!="mon";document.getElementById("perf").hidden=homeMode!="perf";document.getElementById("hm1").textContent="🏍 "+t("hm_mon");document.getElementById("hm2").textContent="🎯 "+t("hm_perf");document.getElementById("hm1").classList.toggle("main",homeMode=="mon");document.getElementById("hm2").classList.toggle("main",homeMode=="perf");if(homeMode=="perf"){loadCmp();renderPerf()}}
@@ -564,7 +564,7 @@ var t0=e.target.closest("[data-o],[data-k],[data-p],[data-x],[data-s],[data-ap],
 var d0=t0.dataset;
 if(d0.tab){showTab(d0.tab);return}
 else if(d0.lf!==undefined){logF=+d0.lf}
-else if(d0.lref){loadLog(true);return}
+else if(d0.lref){trashT=0;loadLog(true);return}
 else if(d0.lclr){var lim7=Date.now()-7*864e5,od=logD.filter(function(e){return e.t<lim7});if(!od.length||!confirm(t("lg_conf")))return;Promise.all(od.map(function(e){return deleteDoc(doc(db,"motari",e._id))})).then(loadLog).catch(function(er){sv("["+((er&&er.code)||er)+"]",true,4000)});return}
 else if(d0.tr){var tt=trD.filter(function(o){return o._id==d0.tr})[0];if(!tt)return;setDoc(doc(db,"motari",tt.x.id),tt.x).then(function(){lgAdd([{k:"restore"}],tt.x);deleteDoc(doc(db,"motari",tt._id)).then(loadLog)}).catch(function(er){alert(t("save_err")+" ["+((er&&er.code)||er)+"]")});return}
 else if(d0.tp){var tq=trD.filter(function(o){return o._id==d0.tp})[0];if(!tq||Date.now()-tq.at<7*864e5||!confirm(t("tr_conf")))return;deleteDoc(doc(db,"motari",tq._id)).then(function(){deleteDoc(doc(db,"motari","_d"+tq.x.id)).catch(function(){});XK.forEach(function(k){deleteDoc(doc(db,"motari","_d"+tq.x.id+"_"+k)).catch(function(){})});loadLog(true)});return}
