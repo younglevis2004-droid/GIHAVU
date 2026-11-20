@@ -460,7 +460,7 @@ if(!all.length){document.getElementById("perf").innerHTML='<p class="sub">'+(rea
 var rows=act.map(function(x){return{x:x,r:pfScore(x)}}).sort(function(a,b){return a.r.sc-b.r.sc});
 var a0=pfIso(1-P),a1=pfIso(0),b0=pfIso(1-2*P),b1=pfIso(-P);
 var inc=pfSum(all,a0,a1),pinc=pfSum(all,b0,b1),incA=pfSum(act,a0,a1);
-var tgt=act.reduce(function(s,x){return s+(x.start&&x.start<=a1?(+x.amt||0)*P/7:0)},0),behind=act.reduce(function(s,x){return s+fin(x).late},0),pdw=act.filter(function(x){return pwAuto(x)?payOk(x):x.paidWk==mon()}).length;
+var tgt=act.reduce(function(s,x){if(!x.start||x.start>a1)return s;if(pwAuto(x))return s+pwWeeks(x).filter(function(w){return !w.sk&&w.d>=a0&&w.d<=a1}).reduce(function(q,w){return q+w.due},0);var f0=x.start>a0?x.start:a0;return s+(+x.amt||0)*Math.max(0,pwDd(f0,a1)+1)/7},0),behind=act.reduce(function(s,x){return s+fin(x).late},0),pdw=act.filter(function(x){return pwAuto(x)?payOk(x):x.paidWk==mon()}).length;
 var act7=act.length?Math.round(act.reduce(function(s,x){return s+Math.min(7,+x.days||0)},0)/(7*act.length)*100):0;
 var avg=rows.length?Math.round(rows.reduce(function(s,o){return s+o.r.sc},0)/rows.length):0,goal=tgt>0?Math.round(incA/tgt*100):0,docok=act.length?Math.round(act.filter(function(x){return(x.doc||[]).every(function(d){return d&&left(d)>=0})}).length/act.length*100):0;
 var nb=P==7?7:P==30?10:12,B=[];for(var k=0;k<nb;k++)B.push(0);all.forEach(function(x){pays(x).forEach(function(y){if(!y.d)return;var kk=P-1+left(y.d);if(kk>=0&&kk<P)B[Math.min(nb-1,Math.floor(kk*nb/P))]+=+y.a||0})});
